@@ -4,7 +4,9 @@ import java.util.Date;
 
 import org.bson.types.ObjectId;
 import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.mapping.Document;
 
+@Document
 public class Trade {
     public enum TradeStatus{CREATED, PENDING,CANCELLED,REJECTED,FILLED,PARTIALLY_FILLED,ERROR}
 
