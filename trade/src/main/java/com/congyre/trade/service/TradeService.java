@@ -17,12 +17,17 @@ public class TradeService {
     public void deleteTradeById(ObjectId id){
         //TODO:ADD 
     }
-    public Trade getTradeById(ObjectId id){
+    public Optional<Trade> getTradeById(ObjectId id){
         //TODO:ADD
         return null;
     }
     public void updateTrade(Trade trade){
         //TODO:ADD
+    }
+
+    public Collection<Trade> returnTrades(String name){
+        //
+        return null;
     }
 
 }
