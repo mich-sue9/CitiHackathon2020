@@ -1,14 +1,101 @@
 package com.congyre.trade;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
 import org.springframework.test.context.junit4.SpringRunner;
+
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.Matchers.equalTo;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
+import java.util.stream.Stream;
+import java.util.stream.StreamSupport;
+
+import com.congyre.trade.entity.Trade;
+import com.congyre.trade.repository.TradeRepository;
+import com.congyre.trade.service.TradeService;
+
+import org.bson.types.ObjectId;
 import org.junit.Test;
 
 import org.junit.runner.RunWith;
 
+
 @SpringBootTest
 @RunWith(SpringRunner.class)
 public class TradeServiceTests {
+
+    private static final String TEST_ID = "31234";
+    private static Trade trade2;
+    private static String ticker = "AAPL";
+
+
+    @Configuration
+    public static class Config {
+
+        // We really shouldn't need this, but when Spring tries to configure a
+        // CompactDiscService bean -- even a mock one! it insists on resolving
+        // the @Autowired dependency to a CompactDiscRepository.
+        @Bean
+        public TradeRepository repo() {
+
+            ObjectId ID = new ObjectId(TEST_ID);
+            List<Trade> trades = new ArrayList<>();
+            Trade trade = new Trade();
+            trade.setId(ID);
+            trade.setStockTicker(ticker);
+            trades.add(trade);
+
+            // setup the mock
+            TradeRepository repo = mock(TradeRepository.class);
+            when(repo.findAll()).thenReturn(trades);
+            when(repo.insert(any(Trade.class))).thenReturn(trade2);
+            when(repo.save(trade2)).thenReturn(trade2);
+            when(repo.findById(ID)).thenReturn(Optional.of(trade));
+            when(repo.customFindByStockTicker(ticker)).thenReturn(List.of(trade));
+            return repo;
+        }
+
+        @Bean
+        public TradeService service() {
+            return new TradeService();
+        }
+    }
+
+    @Autowired
+    TradeService service;
+
+    @Test
+    public void testGetAllTrades(){
+        Iterable<Trade> trades= service.getAllTrade();
+        Stream<Trade> stream = StreamSupport.stream(trades.spliterator(), false);
+        assertThat(stream.count(), equalTo(1L));
+    }
+
+    @Test
+    public void testAddTrade(){
+        Trade savedTrade=service.addTrade(trade2);
+        assertThat(savedTrade, equalTo(trade2));
+
+    }
+
+    @Test
+    public void testDeleteTradeById(){
+
+    }
+
+    @Test
+    public void testGetTradeById(){
+
+    }
+
 
   
 
