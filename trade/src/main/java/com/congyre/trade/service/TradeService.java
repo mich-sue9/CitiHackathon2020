@@ -26,8 +26,8 @@ public class TradeService {
     }
     public Trade addTrade (Trade trade){
         trade.setDateCreated(new Date());
-        repo.insert(trade);
-        return trade;
+       
+        return repo.insert(trade);
     }
     public void deleteTradeById(ObjectId id){
         repo.deleteById(id);
