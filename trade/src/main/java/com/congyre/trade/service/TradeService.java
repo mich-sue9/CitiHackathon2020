@@ -29,9 +29,9 @@ public class TradeService {
     public Optional<Trade> getTradeById(ObjectId id){
         return repo.findById(id);
     }
+
     public void updateTrade(Trade trade){
         //TODO:ADD
-
         return;
     }
 
@@ -40,7 +40,7 @@ public class TradeService {
         return null;
     }
 
-    public Iterable<Trade> getTradeByTicker(String tradeName){
+    public Iterable<Trade> getTradeByTicker(String tickerName){
         return null;
     }
 
