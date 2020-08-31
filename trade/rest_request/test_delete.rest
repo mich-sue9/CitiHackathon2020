@@ -1,1 +1,1 @@
-DELETE http://localhost:8080/api/trades/5f4d5819db7dbb6c0087ade8 HTTP/1.1
+DELETE http://localhost:8080/api/trades/INSERT_ID_HERE HTTP/1.1
