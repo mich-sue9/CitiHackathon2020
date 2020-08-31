@@ -46,9 +46,9 @@ public class TradeController {
 		service.deleteTradeById(new ObjectId(""+id));
 	}
 
-	@RequestMapping(method = RequestMethod.PUT)
-	public void updateTradeStatus(@RequestBody Trade trade) {
-		service.updateTrade(trade);
+	@RequestMapping(method = RequestMethod.PUT, value="/cancel")
+	public void updateTradeStatus(@RequestParam String id) {
+		service.cancelTrade(new ObjectId(id));
 	}
 
 	
