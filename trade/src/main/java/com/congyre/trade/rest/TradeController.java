@@ -1,6 +1,7 @@
 package com.congyre.trade.rest;
 
 
+import java.util.List;
 import java.util.Optional;
 
 import com.congyre.trade.entity.Trade;
@@ -32,8 +33,8 @@ public class TradeController {
     }
     
     @RequestMapping(method = RequestMethod.GET, value = "/ticker/{tickerName}")
-	public Iterable<Trade> getTradesByTicker(@PathVariable("tickerName") String tickerName) {
-        return service.getTradeByTicker(tickerName);
+	public List<Trade> getTradesByTicker(@PathVariable("tickerName") String tickerName) {
+        return service.getTradesByTicker(tickerName);
     }
 
     @RequestMapping(method = RequestMethod.POST)

@@ -4,12 +4,15 @@ import com.congyre.trade.entity.Trade.TradeStatus;
 import com.congyre.trade.repository.TradeRepository;
 
 import java.util.Collection;
+import java.util.List;
 import java.util.Optional;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import org.bson.types.ObjectId;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.mongodb.core.query.Criteria;
+import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -47,8 +50,8 @@ public class TradeService {
         }
     }
 
-    public Iterable<Trade> getTradeByTicker(String tickerName){
-        return null;
+    public List<Trade> getTradesByTicker(String tickerName){
+        return repo.customFindByStockTicker(tickerName);
     }
 
 }
