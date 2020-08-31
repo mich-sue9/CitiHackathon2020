@@ -2,7 +2,7 @@ POST http://localhost:8080//api/trades HTTP/1.1
 content-type: application/json
 
 {
-    "stockTicker": "AAPL",
+    "stockTicker": "AAPL2",
     "quantity": 500,
     "requestPrice": 15.99,
     "tStatus": "CREATED"

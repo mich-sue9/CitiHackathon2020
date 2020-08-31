@@ -3,6 +3,7 @@ import com.congyre.trade.entity.Trade;
 import com.congyre.trade.repository.TradeRepository;
 
 import java.util.Collection;
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 import java.util.logging.Level;
@@ -23,8 +24,10 @@ public class TradeService {
     public Collection<Trade> getAllTrade(){
         return repo.findAll();
     }
-    public void addTrade (Trade trade){
+    public Trade addTrade (Trade trade){
+        trade.setDateCreated(new Date());
         repo.insert(trade);
+        return trade;
     }
     public void deleteTradeById(ObjectId id){
         repo.deleteById(id);
@@ -36,15 +39,11 @@ public class TradeService {
 
     public void cancelTrade(ObjectId tradeId){
         Optional<Trade> retrievedTrade = this.getTradeById(tradeId);
-        if (!(retrievedTrade.isPresent())){
-            log.log(Level.WARNING, "This trade does not exist");
-        } else {
-            Trade newTrade = retrievedTrade.get();
-            String oldTicker = newTrade.getStockTicker();
-            newTrade.setStockTicker("CANCELLED");
-            repo.save(newTrade); 
-            log.log(Level.INFO, "Trade status being updated from " + oldTicker + " to " + newTrade.getStockTicker());
-        }
+        Trade newTrade = retrievedTrade.get();
+        String oldTicker = newTrade.getStockTicker();
+        newTrade.setStockTicker("CANCELLED");
+        repo.save(newTrade); 
+        log.log(Level.INFO, "Trade status being updated from " + oldTicker + " to " + newTrade.getStockTicker());
     }
 
     public List<Trade> getTradesByTicker(String tickerName){
