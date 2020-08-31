@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import static org.mockito.ArgumentMatchers.any;
@@ -30,9 +31,10 @@ import org.junit.runner.RunWith;
 
 @SpringBootTest
 @RunWith(SpringRunner.class)
+@ContextConfiguration(classes=TradeServiceTests.Config.class)
 public class TradeServiceTests {
 
-    private static final String TEST_ID = "31234";
+    private static ObjectId ID = new ObjectId("5f46a3d545bee629d17fd7b2");
     private static Trade trade2;
     private static String ticker = "AAPL";
 
@@ -46,7 +48,7 @@ public class TradeServiceTests {
         @Bean
         public TradeRepository repo() {
 
-            ObjectId ID = new ObjectId(TEST_ID);
+           
             List<Trade> trades = new ArrayList<>();
             Trade trade = new Trade();
             trade.setId(ID);
@@ -81,19 +83,22 @@ public class TradeServiceTests {
 
     @Test
     public void testAddTrade(){
-        Trade savedTrade=service.addTrade(trade2);
+        Trade savedTrade=service.addTrade(new Trade());
         assertThat(savedTrade, equalTo(trade2));
 
     }
 
     @Test
-    public void testDeleteTradeById(){
+    public void testGetTradeById(){
+        Optional<Trade> getTrade = service.getTradeById(ID);
+        assertThat(getTrade.isPresent(), equalTo(true));
+        
 
     }
-
     @Test
-    public void testGetTradeById(){
-
+    public void testGetTradesByTicker(){
+        List<Trade> getTrade = service.getTradesByTicker(ticker);
+        assertThat(getTrade.size(), equalTo(1));
     }
 
 
