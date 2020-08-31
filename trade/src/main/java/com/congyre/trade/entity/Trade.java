@@ -66,7 +66,5 @@ public class Trade {
         this.tStatus = tStatus;
     }
 
-
-
     
 }
