@@ -60,6 +60,10 @@ public class TradeController {
 	}
 
 	public void checkTradeIdExists(String id){
+		if (!ObjectId.isValid(id)){
+			logger.log(Level.WARNING, "This is not a valid ID ");
+			throw new ResponseStatusException(HttpStatus.NOT_FOUND);
+		} 
 		Optional<Trade> trade = service.getTradeById(new ObjectId(id));
 		if (!trade.isPresent()){
 			logger.log(Level.WARNING, "This trade does not exist");
