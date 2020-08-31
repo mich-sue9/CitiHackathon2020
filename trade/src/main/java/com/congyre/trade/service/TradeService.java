@@ -1,6 +1,5 @@
 package com.congyre.trade.service;
 import com.congyre.trade.entity.Trade;
-import com.congyre.trade.entity.Trade.TradeStatus;
 import com.congyre.trade.repository.TradeRepository;
 
 import java.util.Collection;
@@ -11,8 +10,6 @@ import java.util.logging.Logger;
 
 import org.bson.types.ObjectId;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.mongodb.core.query.Criteria;
-import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.stereotype.Service;
 
 @Service
