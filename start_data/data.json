@@ -1,0 +1,145 @@
+[{
+  "_id": {
+    "$oid": "5f4d60c344cc2d60f5cbbd5d"
+  },
+  "dateCreated": {
+    "$date": "2020-08-21T20:42:43.260Z"
+  },
+  "stockTicker": "AAPL",
+  "quantity": 500,
+  "requestPrice": 14.99,
+  "tStatus": "CREATED",
+  "_class": "com.congyre.trade.entity.Trade"
+},{
+  "_id": {
+    "$oid": "5f4d60c344cc2d60f5cbbd5e"
+  },
+  "dateCreated": {
+    "$date": "2020-08-21T21:11:43.896Z"
+  },
+  "stockTicker": "AMZN",
+  "quantity": 400,
+  "requestPrice": 145.32,
+  "tStatus": "CREATED",
+  "_class": "com.congyre.trade.entity.Trade"
+},{
+  "_id": {
+    "$oid": "5f4d60c444cc2d60f5cbbd5f"
+  },
+  "dateCreated": {
+    "$date": "2020-08-23T20:42:44.611Z"
+  },
+  "stockTicker": "AMZN",
+  "quantity": 500,
+  "requestPrice": 156.67,
+  "tStatus": "PENDING",
+  "_class": "com.congyre.trade.entity.Trade"
+},{
+  "_id": {
+    "$oid": "5f4d60c544cc2d60f5cbbd60"
+  },
+  "dateCreated": {
+    "$date": "2020-08-24T20:22:45.222Z"
+  },
+  "stockTicker": "AAPL",
+  "quantity": 500,
+  "requestPrice": 12.66,
+  "tStatus": "PENDING",
+  "_class": "com.congyre.trade.entity.Trade"
+},{
+  "_id": {
+    "$oid": "5f4d60c544cc2d60f5cbbd61"
+  },
+  "dateCreated": {
+    "$date": "2020-08-25T20:27:45.839Z"
+  },
+  "stockTicker": "AMZN",
+  "quantity": 600,
+  "requestPrice": 134.56,
+  "tStatus": "FILLED",
+  "_class": "com.congyre.trade.entity.Trade"
+},{
+  "_id": {
+    "$oid": "5f4d622e2ee85f21ecac9782"
+  },
+  "dateCreated": {
+    "$date": "2020-08-26T20:32:43.260Z"
+  },
+  "stockTicker": "AAPL",
+  "quantity": 600,
+  "requestPrice": 17.99,
+  "tStatus": "CREATED",
+  "_class": "com.congyre.trade.entity.Trade"
+},{
+  "_id": {
+    "$oid": "5f4d62c52ee85f21ecac9783"
+  },
+  "dateCreated": {
+    "$date": "2020-08-31T10:34:43.260Z"
+  },
+  "stockTicker": "AAPL",
+  "quantity": 200,
+  "requestPrice": 17.99,
+  "tStatus": "CANCELLED",
+  "_class": "com.congyre.trade.entity.Trade"
+},{
+  "_id": {
+    "$oid": "5f4d62f22ee85f21ecac9784"
+  },
+  "dateCreated": {
+    "$date": "2020-08-25T20:42:45.839Z"
+  },
+  "stockTicker": "AMZN",
+  "quantity": 500,
+  "requestPrice": 154.56,
+  "tStatus": "PARTIALLY_FILLED",
+  "_class": "com.congyre.trade.entity.Trade"
+},{
+  "_id": {
+    "$oid": "5f4d63682ee85f21ecac9785"
+  },
+  "dateCreated": {
+    "$date": "2020-08-21T21:42:43.896Z"
+  },
+  "stockTicker": "AMZN",
+  "quantity": 500,
+  "requestPrice": 165.32,
+  "tStatus": "CREATED",
+  "_class": "com.congyre.trade.entity.Trade"
+},{
+  "_id": {
+    "$oid": "5f4d63892ee85f21ecac9786"
+  },
+  "dateCreated": {
+    "$date": "2020-08-22T23:42:43.260Z"
+  },
+  "stockTicker": "AAPL",
+  "quantity": 400,
+  "requestPrice": 11.99,
+  "tStatus": "CREATED",
+  "_class": "com.congyre.trade.entity.Trade"
+},{
+  "_id": {
+    "$oid": "5f4d63e02ee85f21ecac9787"
+  },
+  "dateCreated": {
+    "$date": "2020-08-21T18:42:43.260Z"
+  },
+  "stockTicker": "AAPL",
+  "quantity": 500,
+  "requestPrice": 15.39,
+  "tStatus": "CREATED",
+  "_class": "com.congyre.trade.entity.Trade"
+},{
+  "_id": {
+    "$oid": "5f4d64042ee85f21ecac9788"
+  },
+  "dateCreated": {
+    "$date": "2020-08-29T21:12:43.896Z"
+  },
+  "stockTicker": "AMZN",
+  "quantity": 500,
+  "requestPrice": 115.32,
+  "tStatus": "CREATED",
+  "_class": "com.congyre.trade.entity.Trade"
+}]

@@ -1,0 +1,13 @@
+_id,dateCreated,stockTicker,quantity,requestPrice,tStatus,_class
+5f4d60c344cc2d60f5cbbd5d,2020-08-21T20:42:43.260Z,AAPL,500,14.99,CREATED,com.congyre.trade.entity.Trade
+5f4d60c344cc2d60f5cbbd5e,2020-08-21T21:11:43.896Z,AMZN,400,145.32,CREATED,com.congyre.trade.entity.Trade
+5f4d60c444cc2d60f5cbbd5f,2020-08-23T20:42:44.611Z,AMZN,500,156.67,PENDING,com.congyre.trade.entity.Trade
+5f4d60c544cc2d60f5cbbd60,2020-08-24T20:22:45.222Z,AAPL,500,12.66,PENDING,com.congyre.trade.entity.Trade
+5f4d60c544cc2d60f5cbbd61,2020-08-25T20:27:45.839Z,AMZN,600,134.56,FILLED,com.congyre.trade.entity.Trade
+5f4d622e2ee85f21ecac9782,2020-08-26T20:32:43.260Z,AAPL,600,17.99,CREATED,com.congyre.trade.entity.Trade
+5f4d62c52ee85f21ecac9783,2020-08-31T10:34:43.260Z,AAPL,200,17.99,CANCELLED,com.congyre.trade.entity.Trade
+5f4d62f22ee85f21ecac9784,2020-08-25T20:42:45.839Z,AMZN,500,154.56,PARTIALLY_FILLED,com.congyre.trade.entity.Trade
+5f4d63682ee85f21ecac9785,2020-08-21T21:42:43.896Z,AMZN,500,165.32,CREATED,com.congyre.trade.entity.Trade
+5f4d63892ee85f21ecac9786,2020-08-22T23:42:43.260Z,AAPL,400,11.99,CREATED,com.congyre.trade.entity.Trade
+5f4d63e02ee85f21ecac9787,2020-08-21T18:42:43.260Z,AAPL,500,15.39,CREATED,com.congyre.trade.entity.Trade
+5f4d64042ee85f21ecac9788,2020-08-29T21:12:43.896Z,AMZN,500,115.32,CREATED,com.congyre.trade.entity.Trade
