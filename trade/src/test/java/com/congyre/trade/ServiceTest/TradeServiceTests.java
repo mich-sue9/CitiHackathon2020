@@ -1,4 +1,4 @@
-package com.congyre.trade;
+package com.congyre.trade.ServiceTest;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -42,9 +42,6 @@ public class TradeServiceTests {
     @Configuration
     public static class Config {
 
-        // We really shouldn't need this, but when Spring tries to configure a
-        // CompactDiscService bean -- even a mock one! it insists on resolving
-        // the @Autowired dependency to a CompactDiscRepository.
         @Bean
         public TradeRepository repo() {
 
