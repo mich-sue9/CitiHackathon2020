@@ -3,11 +3,8 @@ package com.congyre.trade.service;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.congyre.trade.entity.User;
-
 import com.congyre.trade.repository.UserRepository;
 
-import org.bson.types.ObjectId;
 import org.springframework.beans.factory.annotation.Autowired;
 
 
@@ -21,7 +18,7 @@ public class UserService {
 		return users;
 	}
 	
-	public User getUser(ObjectId userId){
+	public User getUser(String userId){
 		return repo.findById(userId).orElse(null);
 	}
 	

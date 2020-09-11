@@ -9,7 +9,7 @@ public class User {
     @Id
 	private ObjectId UserId;
 	private String UserName;
-	private List<ObjectId> portfolioList;
+	private List<ObjectId> portfoiloList;
 
     public ObjectId getUserId() {
         return UserId;
@@ -27,19 +27,11 @@ public class User {
         UserName = userName;
     }
 
-    public List<ObjectId> getPortfolioList() {
-        return portfolioList;
+    public List<ObjectId> getPortfoiloList() {
+        return portfoiloList;
     }
 
-    public void setPortfolioList(List<ObjectId> portfolioList) {
-        this.portfolioList = portfolioList;
-    }
-
-    public void addToPortfolio(ObjectId portId){
-        this.portfolioList.add(portId);
-    }
-
-    public void removeFromPortfolio(ObjectId portId){
-        this.portfolioList.remove(portId);
+    public void setPortfoiloList(List<ObjectId> portfoiloList) {
+        this.portfoiloList = portfoiloList;
     }
 }
