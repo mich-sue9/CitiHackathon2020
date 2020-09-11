@@ -31,7 +31,7 @@ public class PortfolioService {
         return repo.findById(id);
     }
 
-    public List<ObjectId> getTradeHistory(ObjectId id) {
+    public HashSet<Trade> getTradeHistory(ObjectId id) {
         Optional<Portfolio> retrivePortfolio = repo.findById(id);
         Portfolio portfolio = retrivePortfolio.get();
         return portfolio.getHistory(); // can return null
@@ -50,6 +50,13 @@ public class PortfolioService {
     public void scheduleUpdateOutstandingTrade() {
         log.info("start the interval call to update the outsanding trade for all the portfolios in dbs");
         List<Portfolio> portList = repo.findAll();
+        for(Portfolio p: portList){
+            for(ObjectId id:p.getOutstandingList()){
+                
+            }
+        }
+
+        
 
     }
 
