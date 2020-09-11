@@ -3,6 +3,9 @@ package com.congyre.trade.service;
 import com.congyre.trade.entity.Portfolio;
 import com.congyre.trade.repository.PortfolioRepository;
 
+import java.util.List;
+import java.util.Optional;
+import java.util.Set;
 import java.util.logging.Logger;
 
 import com.congyre.trade.repository.TradeRepository;
@@ -18,8 +21,14 @@ public class PortfolioService {
     @Autowired
     private PortfolioRepository repo;
 
-    public void getportfolio(ObjectId userId){
+    public Optional<Portfolio> getportfolio(ObjectId userId){
+        return repo.findByUserId(userId);
+    }
 
+    public Optional<Set> getTradeHistory(ObjectId userId){
+        Optional<Portfolio> retrivePortfolio = repo.findByUserId(userId);
+        Portfolio portfolio = retrivePortfolio.get();
+        return portfolio.getHistory();
     }
 
 }
