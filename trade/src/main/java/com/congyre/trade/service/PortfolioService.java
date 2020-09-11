@@ -9,6 +9,7 @@ import com.congyre.trade.repository.TradeRepository;
 
 import org.bson.types.ObjectId;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -18,7 +19,17 @@ public class PortfolioService {
     @Autowired
     private PortfolioRepository repo;
 
+    @Autowired
+    private TradeService tradeService;
+
     public void getportfolio(ObjectId userId){
+
+    }
+
+    @Scheduled(fixedDelay = 1000)
+    public void scheduleUpdateOutstandingTrade() {
+        log.info("start the interval call to update the outsanding trade for all the portfolios in dbs");
+
 
     }
 
