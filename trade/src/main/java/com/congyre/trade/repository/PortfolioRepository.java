@@ -1,6 +1,4 @@
 package com.congyre.trade.repository;
-
-import java.util.List;
 import java.util.Optional;
 
 import com.congyre.trade.entity.Portfolio;

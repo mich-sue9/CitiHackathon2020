@@ -3,6 +3,7 @@ package com.congyre.trade.service;
 import com.congyre.trade.entity.Portfolio;
 import com.congyre.trade.entity.Trade;
 import com.congyre.trade.entity.User;
+import com.congyre.trade.entity.Trade.TradeStatus;
 import com.congyre.trade.repository.PortfolioRepository;
 
 import java.util.HashSet;
@@ -64,9 +65,25 @@ public class PortfolioService {
     @Scheduled(fixedDelay = 1000)
     public void scheduleUpdateOutstandingTrade() {
         log.info("start the interval call to update the outsanding trade for all the portfolios in dbs");
+        Trade curTrade;
         List<Portfolio> portList = repo.findAll();
+        double expense;
+        //update the outstandinList for each portfolio we have
         for(Portfolio p: portList){
             for(ObjectId id:p.getOutstandingList()){
+                //check the status of outstanding list 
+                curTrade = tradeService.getTradeById(id).orElse(null);
+                //if current trade is not null and the current trade has been fulfilled
+                if(curTrade != null & curTrade.gettStatus()==TradeStatus.FILLED){
+                    //remove the trade from the outStandinglist
+                    p.removeTradeIdFromOutstanding(id);
+                    //set the money change
+                    expense = curTrade.getQuantity()*curTrade.getRequestPrice();
+                    p.setCashOnHand(p.getCashOnHand()+expense);
+                    p.setTotalExpense(p.getTotalExpense()+expense);
+
+                }
+
                 
             }
         }
