@@ -1,26 +1,53 @@
 package com.congyre.trade.entity;
 
 import java.util.HashMap;
+import java.util.HashSet;
 
+import org.bson.types.ObjectId;
+import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.mapping.Document;
+
+@Document
 public class Portfolio {
 
-    private int id;
+    @Id
+    private ObjectId id;
     private int userId;
     private double totalExpense;
-    private HashMap<String, Stock> stocks;
+
     private double cashOnHand;
     private double totalIncome;
+    private HashMap<String, Stock> stocks;
+    private HashSet<Trade> history;
+    private HashSet<Trade> outstandingList;
 
+    public ObjectId getId() {
+        return id;
+    }
+
+    public void setId(ObjectId id) {
+        this.id = id;
+    }
+
+    
     public int getUserId() {
         return userId;
     }
 
-    public int getId() {
-        return id;
+    public HashSet<Trade> getOutstandingList() {
+        return outstandingList;
     }
 
-    public void setId(int id) {
-        this.id = id;
+    public void setOutstandingList(HashSet<Trade> outstandingList) {
+        this.outstandingList = outstandingList;
+    }
+
+    public HashSet<Trade> getHistory() {
+        return history;
+    }
+
+    public void setHistory(HashSet<Trade> history) {
+        this.history = history;
     }
 
     public double getCashOnHand() {
