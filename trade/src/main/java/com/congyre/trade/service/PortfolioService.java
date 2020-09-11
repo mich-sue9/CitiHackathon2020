@@ -37,7 +37,12 @@ public class PortfolioService {
         return portfolio.getHistory(); // can return null
     }
 
-    public void addTrade(Trade trade){
+    public void addTrade(ObjectId tradeId, ObjectId portfolioId){
+        Optional<Portfolio> retrievePortfolio = repo.findById(portfolioId);
+        Portfolio portfolio = retrievePortfolio.get();
+        portfolio.addTradeIdToOutstanding(tradeId);
+        portfolio.addTradeIdToHistory(tradeId);
+        repo.save(portfolio);
     }
 
     

@@ -2,6 +2,7 @@ package com.congyre.trade.entity;
 
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.List;
 
 import org.bson.types.ObjectId;
 import org.springframework.data.annotation.Id;
@@ -19,8 +20,8 @@ public class Portfolio {
     private double cashOnHand;
     private double totalIncome;
     private HashMap<String, Stock> stocks;
-    private HashSet<ObjectId> history;
-    private HashSet<ObjectId> outstandingList;
+    private List<ObjectId> history;
+    private List<ObjectId> outstandingList;
 
     public ObjectId getId() {
         return id;
@@ -35,20 +36,24 @@ public class Portfolio {
         return userId;
     }
 
-    public HashSet<ObjectId> getOutstandingList() {
+    public List<ObjectId> getOutstandingList() {
         return outstandingList;
     }
 
-    public void setOutstandingList(HashSet<ObjectId> outstandingList) {
-        this.outstandingList = outstandingList;
+    public void removeTradeIdFromOutstanding(ObjectId tradeId){
+        this.outstandingList.remove(tradeId);
     }
 
-    public HashSet<ObjectId> getHistory() {
+    public void addTradeIdToOutstanding(ObjectId tradeId){
+        this.outstandingList.add(tradeId);
+    }
+
+    public List<ObjectId> getHistory() {
         return history;
     }
 
-    public void setHistory(HashSet<ObjectId> history) {
-        this.history = history;
+    public void addTradeIdToHistory(ObjectId tradeId){
+        this.history.add(tradeId);
     }
 
     public double getCashOnHand() {

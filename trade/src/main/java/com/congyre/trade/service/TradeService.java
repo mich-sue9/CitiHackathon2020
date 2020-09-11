@@ -31,9 +31,9 @@ public class TradeService {
     ***  A new trade will be submitted to the Trade repository.
     ***  A new trade entry will also be added to Portfolio's history & outstanding list.
     */
-    public Trade addTrade (Trade trade, ObjectId userId){
+    public Trade addTrade (Trade trade, ObjectId porfolioId){
         trade.setDateCreated(new Date());
-        portfolio.addTrade(trade.getId(), userId);
+        portfolio.addTrade(trade.getId(), porfolioId);
         return repo.insert(trade);
     }
 
