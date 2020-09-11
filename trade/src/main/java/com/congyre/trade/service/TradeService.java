@@ -33,7 +33,7 @@ public class TradeService {
     */
     public Trade addTrade (Trade trade, ObjectId userId){
         trade.setDateCreated(new Date());
-        portfolio.addTrade(trade, userId);
+        portfolio.addTrade(trade.getId(), userId);
         return repo.insert(trade);
     }
 
