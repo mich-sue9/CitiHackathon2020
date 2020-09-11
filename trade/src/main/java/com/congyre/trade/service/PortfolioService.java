@@ -2,6 +2,7 @@ package com.congyre.trade.service;
 
 import com.congyre.trade.entity.Portfolio;
 import com.congyre.trade.entity.Trade;
+import com.congyre.trade.entity.User;
 import com.congyre.trade.repository.PortfolioRepository;
 
 import java.util.HashSet;
@@ -27,19 +28,26 @@ public class PortfolioService {
     @Autowired
     private TradeService tradeService;
 
+    @Autowired
+    private UserService userService;
+
+
     public Optional<Portfolio> getportfolio(ObjectId id) {
         return repo.findById(id);
     }
 
-<<<<<<< HEAD
-    public void addPortfolio
+    public void addPortfolio(ObjectId userId, Portfolio port){
+        //find user by id 
+        User curUser = userService.getUser(userId);
+        curUser.addToPortfolio(port.getId());
+        //update user by adding current portfolio to user 
+        userService.updateUser(curUser);
+        repo.save(port);        
+    }
 
     public Optional<Set> getTradeHistory(ObjectId userId){
         Optional<Portfolio> retrivePortfolio = repo.findByUserId(userId);
-=======
-    public HashSet<Trade> getTradeHistory(ObjectId id) {
-        Optional<Portfolio> retrivePortfolio = repo.findById(id);
->>>>>>> b5c95c1a26f1735a2f49336bc3994f7a7eb8c9df
+
         Portfolio portfolio = retrivePortfolio.get();
         return portfolio.getHistory(); // can return null
     }
