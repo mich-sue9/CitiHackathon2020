@@ -21,17 +21,14 @@ public class PortfolioService {
 
     @Autowired
     private PortfolioRepository repo;
-
-<<<<<<< HEAD
-    public Optional<Portfolio> getportfolio(ObjectId userId){
-        return repo.findByUserId(userId);
-    }
-=======
+    
     @Autowired
     private TradeService tradeService;
 
-    public void getportfolio(ObjectId userId){
->>>>>>> d1a5e629b5415cf07156ec65daaba4acde47a71d
+
+    public Optional<Portfolio> getportfolio(ObjectId userId){
+        return repo.findByUserId(userId);
+    }
 
     public Optional<Set> getTradeHistory(ObjectId userId){
         Optional<Portfolio> retrivePortfolio = repo.findByUserId(userId);
