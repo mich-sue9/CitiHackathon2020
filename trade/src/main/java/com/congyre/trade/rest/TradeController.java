@@ -41,10 +41,10 @@ public class TradeController {
         return service.getTradesByTicker(tickerName);
     }
 
-	@RequestMapping(method = RequestMethod.POST)
+	@RequestMapping(method = RequestMethod.POST, value="/addTrade/{portfolioId}")
 	@ResponseStatus(HttpStatus.CREATED)
-	public void addTrade(@RequestBody Trade newTrade) {
-		service.addTrade(newTrade);
+	public void addTrade(@RequestBody Trade newTrade, @PathVariable("portfolioId") String id) {
+		service.addTrade(newTrade, new ObjectId(id));
 	}
     
 	@RequestMapping(method = RequestMethod.DELETE, value = "/{id}")
