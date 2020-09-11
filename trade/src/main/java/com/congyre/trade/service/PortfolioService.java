@@ -1,6 +1,7 @@
 package com.congyre.trade.service;
 
 import com.congyre.trade.entity.Portfolio;
+import com.congyre.trade.entity.Trade;
 import com.congyre.trade.repository.PortfolioRepository;
 
 import java.util.List;
@@ -36,10 +37,13 @@ public class PortfolioService {
         return portfolio.getHistory();
     }
 
+    public void addTrade(Trade trade){
+    }
+
+    
     @Scheduled(fixedDelay = 1000)
     public void scheduleUpdateOutstandingTrade() {
         log.info("start the interval call to update the outsanding trade for all the portfolios in dbs");
-
 
     }
 

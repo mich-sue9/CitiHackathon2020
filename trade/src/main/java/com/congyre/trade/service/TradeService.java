@@ -20,15 +20,23 @@ public class TradeService {
     @Autowired
     private TradeRepository repo;
 
+    @Autowired 
+    private PortfolioService portfolio;
 
     public Collection<Trade> getAllTrade(){
         return repo.findAll();
     }
+
+    /** Submits a request to trade. 
+    ***  A new trade will be submitted to the Trade repository.
+    ***  A new trade entry will also be added to Portfolio's history & outstanding list.
+    */
     public Trade addTrade (Trade trade){
         trade.setDateCreated(new Date());
-       
+        portfolio.addTrade(trade);
         return repo.insert(trade);
     }
+
     public void deleteTradeById(ObjectId id){
         repo.deleteById(id);
     }
