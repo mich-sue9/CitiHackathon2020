@@ -36,6 +36,12 @@ public class PortfolioService {
         return repo.findById(id);
     }
 
+    public HashSet<Trade> getTradeHistory(ObjectId id) {
+        Optional<Portfolio> retrivePortfolio = repo.findById(id);
+        Portfolio portfolio = retrivePortfolio.get();
+        return portfolio.getHistory(); // can return null
+    }
+
     public void addPortfolio(ObjectId userId, Portfolio port){
         //find user by id 
         User curUser = userService.getUser(userId);
@@ -45,14 +51,13 @@ public class PortfolioService {
         repo.save(port);        
     }
 
-    public Optional<Set> getTradeHistory(ObjectId userId){
-        Optional<Portfolio> retrivePortfolio = repo.findByUserId(userId);
 
-        Portfolio portfolio = retrivePortfolio.get();
-        return portfolio.getHistory(); // can return null
-    }
-
-    public void addTrade(Trade trade){
+    public void addTrade(ObjectId tradeId, ObjectId portfolioId){
+        Optional<Portfolio> retrievePortfolio = repo.findById(portfolioId);
+        Portfolio portfolio = retrievePortfolio.get();
+        portfolio.addTradeIdToOutstanding(tradeId);
+        portfolio.addTradeIdToHistory(tradeId);
+        repo.save(portfolio);
     }
 
     
