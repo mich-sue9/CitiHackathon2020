@@ -31,6 +31,8 @@ public class PortfolioService {
         return repo.findByUserId(userId);
     }
 
+    public void addPortfolio
+
     public Optional<Set> getTradeHistory(ObjectId userId){
         Optional<Portfolio> retrivePortfolio = repo.findByUserId(userId);
         Portfolio portfolio = retrivePortfolio.get();
@@ -44,6 +46,9 @@ public class PortfolioService {
     @Scheduled(fixedDelay = 1000)
     public void scheduleUpdateOutstandingTrade() {
         log.info("start the interval call to update the outsanding trade for all the portfolios in dbs");
+        List<Portfolio> portList = repo.findAll();
+
+        
 
     }
 

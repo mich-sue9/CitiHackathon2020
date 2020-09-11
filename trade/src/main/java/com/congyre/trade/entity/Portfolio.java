@@ -12,7 +12,8 @@ public class Portfolio {
 
     @Id
     private ObjectId id;
-    private int userId;
+
+    private ObjectId userId;
     private double totalExpense;
 
     private double cashOnHand;
@@ -30,7 +31,7 @@ public class Portfolio {
     }
 
     
-    public int getUserId() {
+    public ObjectId getUserId() {
         return userId;
     }
 
