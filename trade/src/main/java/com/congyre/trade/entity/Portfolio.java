@@ -83,7 +83,7 @@ public class Portfolio {
         this.totalExpense = totalExpense;
     }
 
-    public void setUserId(int userId) {
+    public void setUserId(ObjectId userId) {
         this.userId = userId;
     }
 
