@@ -1,5 +1,10 @@
 package com.congyre.trade.repository;
 
-public class PortfolioRepository extends MongoRepository<Portfolio, ObjectId> {
+import com.congyre.trade.entity.Portfolio;
+
+import org.bson.types.ObjectId;
+import org.springframework.data.mongodb.repository.MongoRepository;
+
+public interface PortfolioRepository extends MongoRepository<Portfolio, ObjectId> {
     
 }
