@@ -1,6 +1,7 @@
 package com.congyre.trade.service;
 
 import com.congyre.trade.entity.Portfolio;
+import com.congyre.trade.entity.Trade;
 import com.congyre.trade.repository.PortfolioRepository;
 
 import java.util.logging.Logger;
@@ -20,6 +21,10 @@ public class PortfolioService {
 
     public void getportfolio(ObjectId userId){
 
+    }
+
+    public void addTrade(Trade trade){
+        
     }
 
 }
