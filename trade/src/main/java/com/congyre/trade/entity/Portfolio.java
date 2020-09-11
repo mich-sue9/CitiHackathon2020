@@ -18,8 +18,8 @@ public class Portfolio {
     private double cashOnHand;
     private double totalIncome;
     private HashMap<String, Stock> stocks;
-    private HashSet<Trade> history;
-    private HashSet<Trade> outstandingList;
+    private HashSet<ObjectId> history;
+    private HashSet<ObjectId> outstandingList;
 
     public ObjectId getId() {
         return id;
@@ -29,24 +29,24 @@ public class Portfolio {
         this.id = id;
     }
 
-    
+
     public int getUserId() {
         return userId;
     }
 
-    public HashSet<Trade> getOutstandingList() {
+    public HashSet<ObjectId> getOutstandingList() {
         return outstandingList;
     }
 
-    public void setOutstandingList(HashSet<Trade> outstandingList) {
+    public void setOutstandingList(HashSet<ObjectId> outstandingList) {
         this.outstandingList = outstandingList;
     }
 
-    public HashSet<Trade> getHistory() {
+    public HashSet<ObjectId> getHistory() {
         return history;
     }
 
-    public void setHistory(HashSet<Trade> history) {
+    public void setHistory(HashSet<ObjectId> history) {
         this.history = history;
     }
 
