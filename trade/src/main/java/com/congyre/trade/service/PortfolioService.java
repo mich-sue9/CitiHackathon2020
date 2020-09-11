@@ -60,6 +60,11 @@ public class PortfolioService {
     public void scheduleUpdateOutstandingTrade() {
         log.info("start the interval call to update the outsanding trade for all the portfolios in dbs");
         List<Portfolio> portList = repo.findAll();
+        for(Portfolio p: portList){
+            for(ObjectId id:p.getOutstandingList()){
+                
+            }
+        }
 
         
 
