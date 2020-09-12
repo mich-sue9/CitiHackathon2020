@@ -37,7 +37,7 @@ public class PortfolioService {
         return repo.findById(id);
     }
 
-    public HashSet<Trade> getTradeHistory(ObjectId id) {
+    public List<ObjectId> getTradeHistory(ObjectId id) {
         Optional<Portfolio> retrivePortfolio = repo.findById(id);
         Portfolio portfolio = retrivePortfolio.get();
         return portfolio.getHistory(); // can return null
