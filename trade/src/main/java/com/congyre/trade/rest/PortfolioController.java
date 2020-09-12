@@ -1,5 +1,6 @@
 package com.congyre.trade.rest;
 
+import java.util.List;
 import java.util.Optional;
 import java.util.logging.Logger;
 
@@ -24,31 +25,24 @@ public class PortfolioController {
     @Autowired
     private PortfolioService service;
 
+
     @RequestMapping(method = RequestMethod.GET, value = "/{id}")
     public Optional<Portfolio> getAllInPortfolio(@PathVariable("id") String id) {
-		return service.getportfolio(new ObjectId(id));
-    }
-    
-
-    
-    public void updateTotalExpense(){
-
+        return service.getportfolio(new ObjectId(id));
     }
 
-    public void addStock(String ticker, int amount){
 
+    @RequestMapping(method = RequestMethod.GET, value = "/history/{id}")
+    public List<Trade> getTradeHistory(@PathVariable("id") String id) {
+        // want to display trade details of all trades under this portfolio
+        return service.getTradeHistory(new ObjectId(id));
     }
 
-    public void removeStock(String ticker, int amount){
 
-    }
-
-    public void addTrade(){
-
-    }
-
-    public void getTradeHistory(ObjectId id){
-
+    @RequestMapping(method = RequestMethod.GET, value = "/pending/{id}")
+    public List<Trade> getPendingTrades(@PathVariable("id") String id){
+        // want to display trade details of pending trades
+        return service.getPendingTrades(new ObjectId(id));
     }
 
 }

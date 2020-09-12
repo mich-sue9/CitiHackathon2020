@@ -6,13 +6,10 @@ import com.congyre.trade.entity.User;
 import com.congyre.trade.entity.Trade.TradeStatus;
 import com.congyre.trade.repository.PortfolioRepository;
 
-import java.util.HashSet;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
-import java.util.Set;
 import java.util.logging.Logger;
-
-import com.congyre.trade.repository.TradeRepository;
 
 import org.bson.types.ObjectId;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -37,11 +34,38 @@ public class PortfolioService {
         return repo.findById(id);
     }
 
-    public List<ObjectId> getTradeHistory(ObjectId id) {
+    public List<Trade> getTradeHistory(ObjectId id) {
         Optional<Portfolio> retrivePortfolio = repo.findById(id);
-        Portfolio portfolio = retrivePortfolio.get();
-        return portfolio.getHistory(); // can return null
+        Portfolio portfolio = retrivePortfolio.get(); // can get null
+        // want to add null portfolio exception handling?
+
+        // get historical trades
+        List<ObjectId> historicalIds = portfolio.getHistory();
+        List<Trade> historicalTrades = new ArrayList<Trade>();
+        for (ObjectId tradeId : historicalIds){
+            Optional<Trade> getATrade = tradeService.getTradeById(tradeId);
+            Trade aTrade = getATrade.get(); // can get null?
+            historicalTrades.add(aTrade);
+        }
+        return historicalTrades;
     }
+
+    public List<Trade> getPendingTrades(ObjectId id) {
+        Optional<Portfolio> retrivePortfolio = repo.findById(id);
+        Portfolio portfolio = retrivePortfolio.get(); // can get null
+        // want to add null portfolio exception handling?
+
+        // get pending trades
+        List<ObjectId> pendingIds = portfolio.getHistory();
+        List<Trade> pendingTrades = new ArrayList<Trade>();
+        for (ObjectId tradeId : pendingIds){
+            Optional<Trade> getATrade = tradeService.getTradeById(tradeId);
+            Trade aTrade = getATrade.get(); // can get null?
+            pendingTrades.add(aTrade);
+        }
+        return pendingTrades;
+    }
+
 
     public void addPortfolio(ObjectId userId, Portfolio port){
         //find user by id 
