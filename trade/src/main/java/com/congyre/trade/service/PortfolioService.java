@@ -19,6 +19,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
+import java.lang.Exception;
 
 import org.springframework.web.server.ResponseStatusException;
 
@@ -98,30 +99,56 @@ public class PortfolioService {
     }
 
     public void addStock(String ticker, int quantity, ObjectId portfolioId){
-        Optional<Portfolio> retrievePortfolio = repo.findById(portfolioId);
-        if (!retrievePortfolio.isPresent()){
-			log.log(Level.WARNING, "This portfolio does not exist in repo");
-			throw new ResponseStatusException(HttpStatus.NOT_FOUND);
-		} 
-        
-        Portfolio portfolio = retrievePortfolio.get();
-        HashMap<String, Stock> portfolio_stocks = portfolio.getStocks();
-        if (portfolio_stocks.containsKey(ticker) == false){ //Stock does not exist in portfolio yet
-            Stock new_stock = new Stock();
-            new_stock.setAmount(quantity);
-            new_stock.setTicker(ticker);
-            portfolio_stocks.put(ticker, new_stock);
-        } else {
-            Stock stock = portfolio_stocks.get(ticker);
-            stock.setAmount(stock.getAmount() + quantity);
+        try{
+            Portfolio portfolio = getPortfolio(portfolioId);
+            HashMap<String, Stock> portfolio_stocks = portfolio.getStocks();
+            if (portfolio_stocks.containsKey(ticker) == false){ //Stock does not exist in portfolio yet
+                Stock new_stock = new Stock();
+                new_stock.setAmount(quantity);
+                new_stock.setTicker(ticker);
+                portfolio_stocks.put(ticker, new_stock);
+            } else {
+                Stock stock = portfolio_stocks.get(ticker);
+                stock.setAmount(stock.getAmount() + quantity);
+            }
+            repo.save(portfolio);
         }
-        repo.save(portfolio);
-        
+        catch(ResponseStatusException ex){
+            log.log(Level.WARNING, "This portfolio does not exist in repo");
+        }
     }
 
     public void removeStock(String ticker, int quantity, ObjectId portfolioId){
-
+        try{
+            Portfolio portfolio = getPortfolio(portfolioId);
+            HashMap<String, Stock> portfolio_stocks = portfolio.getStocks();
+            if (portfolio_stocks.containsKey(ticker) == false){
+                log.log(Level.WARNING, "This ticker does not exist in portfolio");
+                throw new ResponseStatusException(HttpStatus.NOT_FOUND);
+            }
+            Stock stock = portfolio_stocks.get(ticker);
+            if (stock.getAmount() < quantity){
+                log.log(Level.WARNING, "Insufficient stocks to remove");
+                throw new ResponseStatusException(HttpStatus.BAD_REQUEST);
+            } else {
+                stock.setAmount(stock.getAmount() - quantity);
+                repo.save(portfolio);
+            }
+        }
+        catch(ResponseStatusException ex){
+            log.log(Level.WARNING, "This portfolio does not exist in repo");
+        }
+        
     }
+    
+    public Portfolio getPortfolio(ObjectId portfolioId){
+        Optional<Portfolio> retrievePortfolio = repo.findById(portfolioId);
+        if (!retrievePortfolio.isPresent()){
+			throw new ResponseStatusException(HttpStatus.NOT_FOUND);
+		} 
+        return retrievePortfolio.get();
+    }
+
 
     
     @Scheduled(fixedDelay = 1000)
