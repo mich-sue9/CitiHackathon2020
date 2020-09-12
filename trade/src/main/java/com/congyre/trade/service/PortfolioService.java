@@ -102,20 +102,25 @@ public class PortfolioService {
         if (!retrievePortfolio.isPresent()){
 			log.log(Level.WARNING, "This portfolio does not exist in repo");
 			throw new ResponseStatusException(HttpStatus.NOT_FOUND);
-		} else {
-            Portfolio portfolio = retrievePortfolio.get();
-            HashMap<String, Stock> portfolio_stocks = portfolio.getStocks();
-            if (portfolio_stocks.containsKey(ticker) == false){ //Stock does not exist in portfolio yet
-                Stock new_stock = new Stock();
-                new_stock.setAmount(quantity);
-                new_stock.setTicker(ticker);
-                portfolio_stocks.put(ticker, new_stock);
-            } else {
-                Stock stock = portfolio_stocks.get(ticker);
-                stock.setAmount(stock.getAmount() + quantity);
-            }
-            repo.save(portfolio);
+		} 
+        
+        Portfolio portfolio = retrievePortfolio.get();
+        HashMap<String, Stock> portfolio_stocks = portfolio.getStocks();
+        if (portfolio_stocks.containsKey(ticker) == false){ //Stock does not exist in portfolio yet
+            Stock new_stock = new Stock();
+            new_stock.setAmount(quantity);
+            new_stock.setTicker(ticker);
+            portfolio_stocks.put(ticker, new_stock);
+        } else {
+            Stock stock = portfolio_stocks.get(ticker);
+            stock.setAmount(stock.getAmount() + quantity);
         }
+        repo.save(portfolio);
+        
+    }
+
+    public void removeStock(String ticker, int quantity, ObjectId portfolioId){
+
     }
 
     
