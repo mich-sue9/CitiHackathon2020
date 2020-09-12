@@ -1,5 +1,6 @@
 package com.congyre.trade.entity;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
@@ -23,6 +24,13 @@ public class Portfolio {
     private List<ObjectId> history;
     private List<ObjectId> outstandingList;
 
+
+    public Portfolio(){
+        this.stocks = new HashMap<String, Stock>();
+        this.history = new ArrayList<ObjectId>();
+        this.outstandingList = new ArrayList<ObjectId>();
+    }
+    
     public ObjectId getId() {
         return id;
     }

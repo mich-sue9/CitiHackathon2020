@@ -1,20 +1,26 @@
 package com.congyre.trade.service;
 
 import com.congyre.trade.entity.Portfolio;
+import com.congyre.trade.entity.Stock;
 import com.congyre.trade.entity.Trade;
 import com.congyre.trade.entity.User;
 import com.congyre.trade.entity.Trade.TradeStatus;
 import com.congyre.trade.repository.PortfolioRepository;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Optional;
+import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import org.bson.types.ObjectId;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
+
+import org.springframework.web.server.ResponseStatusException;
 
 @Service
 public class PortfolioService {
@@ -77,12 +83,39 @@ public class PortfolioService {
     }
 
 
+    // Called when TradeService calls add Trade
     public void addTrade(ObjectId tradeId, ObjectId portfolioId){
         Optional<Portfolio> retrievePortfolio = repo.findById(portfolioId);
-        Portfolio portfolio = retrievePortfolio.get();
-        portfolio.addTradeIdToOutstanding(tradeId);
-        portfolio.addTradeIdToHistory(tradeId);
-        repo.save(portfolio);
+        if (!retrievePortfolio.isPresent()){
+			log.log(Level.WARNING, "This portfolio does not exist in repo");
+			throw new ResponseStatusException(HttpStatus.NOT_FOUND);
+		} else {
+            Portfolio portfolio = retrievePortfolio.get();
+            portfolio.addTradeIdToOutstanding(tradeId);
+            portfolio.addTradeIdToHistory(tradeId);
+            repo.save(portfolio);
+        }
+    }
+
+    public void addStock(String ticker, int quantity, ObjectId portfolioId){
+        Optional<Portfolio> retrievePortfolio = repo.findById(portfolioId);
+        if (!retrievePortfolio.isPresent()){
+			log.log(Level.WARNING, "This portfolio does not exist in repo");
+			throw new ResponseStatusException(HttpStatus.NOT_FOUND);
+		} else {
+            Portfolio portfolio = retrievePortfolio.get();
+            HashMap<String, Stock> portfolio_stocks = portfolio.getStocks();
+            if (portfolio_stocks.containsKey(ticker) == false){ //Stock does not exist in portfolio yet
+                Stock new_stock = new Stock();
+                new_stock.setAmount(quantity);
+                new_stock.setTicker(ticker);
+                portfolio_stocks.put(ticker, new_stock);
+            } else {
+                Stock stock = portfolio_stocks.get(ticker);
+                stock.setAmount(stock.getAmount() + quantity);
+            }
+            repo.save(portfolio);
+        }
     }
 
     
