@@ -45,6 +45,16 @@ public class PortfolioController {
         return service.getPendingTrades(new ObjectId(id));
     }
 
+    @RequestMapping(method = RequestMethod.POST, value="/addStock/{portfolioId}/{ticker}/{quantity}")
+	public void addStock(@PathVariable("ticker") String ticker, @PathVariable("portfolioId") String portfolioId, @PathVariable("quantity") int quantity) {
+        service.addStock(ticker, quantity, new ObjectId(portfolioId));
+    }
+
+    @RequestMapping(method = RequestMethod.POST, value="/removeStock/{portfolioId}/{ticker}/{quantity}")
+	public void removeStock(@PathVariable("ticker") String ticker, @PathVariable("portfolioId") String portfolioId, @PathVariable("quantity") int quantity) {
+        service.removeStock(ticker, quantity, new ObjectId(portfolioId));
+    }
+
 }
 
 
