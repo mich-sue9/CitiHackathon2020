@@ -1,2 +1,2 @@
-POST http://localhost:8080/api/portfolios/addStock/5f5e410c827e420ec6613759/APPL/200 HTTP/1.1
+POST http://localhost:8080/api/portfolios/addStock/PORTFOLIOID/TICKER/AMOUNT HTTP/1.1
 content-type: application/json
