@@ -80,7 +80,7 @@ public class TradeServiceTests {
     
     @Test
     public void testAddTrade(){
-        Trade savedTrade=service.addTrade(new Trade());
+        Trade savedTrade=service.addTrade(new Trade(),ID);
         assertThat(savedTrade, equalTo(trade2));
 
     }

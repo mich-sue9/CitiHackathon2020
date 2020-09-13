@@ -158,7 +158,6 @@ public class PortfolioService {
         return retrievePortfolio.get();
     }
 
-
     
     @Scheduled(fixedDelay = 1000)
     public void scheduleUpdateOutstandingTrade() {
@@ -175,11 +174,15 @@ public class PortfolioService {
                 if(curTrade != null & curTrade.gettStatus()==TradeStatus.FILLED){
                     //remove the trade from the outStandinglist
                     p.removeTradeIdFromOutstanding(id);
+                    
                     //set the money change
                     expense = curTrade.getQuantity()*curTrade.getRequestPrice();
                     p.setCashOnHand(p.getCashOnHand()+expense);
                     p.setTotalExpense(p.getTotalExpense()+expense);
-
+                    
+                    //save to repo
+                    repo.save(p);
+                   
                 }
 
                 
