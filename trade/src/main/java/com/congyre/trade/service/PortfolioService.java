@@ -54,7 +54,7 @@ public class PortfolioService {
             for (ObjectId tradeId : historicalIds){
                 Optional<Trade> getATrade = tradeService.getTradeById(tradeId); // can be empty
 
-                // add the trade into the return list, if we can find it succesfully
+                // add the trade into the return list, if we can find it successfully
                 if(getATrade.isPresent()){
                     Trade aTrade = getATrade.get();
                     historicalTrades.add(aTrade);
@@ -103,7 +103,7 @@ public class PortfolioService {
             return pendingTrades;
         
         }else{
-            // can't find the protfolio with this id
+            // can't find the portfolio with this id
             log.log(Level.WARNING, "This portfolio does not exist in repo");
 			throw new ResponseStatusException(HttpStatus.NOT_FOUND);
         }
