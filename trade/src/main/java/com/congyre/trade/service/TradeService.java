@@ -33,8 +33,9 @@ public class TradeService {
     */
     public Trade addTrade (Trade trade, ObjectId porfolioId){
         trade.setDateCreated(new Date());
-        portfolio.addTrade(trade.getId(), porfolioId);
-        return repo.insert(trade);
+        Trade newTrade = repo.insert(trade);
+        portfolio.addTrade(newTrade.getId(), porfolioId);
+        return newTrade;
     }
 
     public void deleteTradeById(ObjectId id){

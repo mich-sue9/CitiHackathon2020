@@ -83,6 +83,13 @@ public class PortfolioService {
         repo.save(port);        
     }
 
+    /**
+     * FOR TESTING PURPOSES. WANT TO MANUALLY CREATE A PORTFOLIO
+     */
+    public Portfolio addPortfolio(){
+        Portfolio newPortfolio = new Portfolio();
+        return repo.insert(newPortfolio);
+    }
 
     // Called when TradeService calls add Trade
     public void addTrade(ObjectId tradeId, ObjectId portfolioId){
@@ -92,6 +99,8 @@ public class PortfolioService {
 			throw new ResponseStatusException(HttpStatus.NOT_FOUND);
 		} else {
             Portfolio portfolio = retrievePortfolio.get();
+            log.log(Level.INFO, "Portfolio retrieved with id: " + portfolio.getId());
+            log.log(Level.INFO, "Trying to add trade id: " + tradeId);
             portfolio.addTradeIdToOutstanding(tradeId);
             portfolio.addTradeIdToHistory(tradeId);
             repo.save(portfolio);
