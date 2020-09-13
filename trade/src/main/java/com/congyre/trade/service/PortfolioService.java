@@ -188,6 +188,7 @@ public class PortfolioService {
                 
             }
         }
+        log.info("end of scheduled job");
 
         
 
