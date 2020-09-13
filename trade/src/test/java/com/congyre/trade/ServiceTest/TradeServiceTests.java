@@ -77,14 +77,14 @@ public class TradeServiceTests {
         Stream<Trade> stream = StreamSupport.stream(trades.spliterator(), false);
         assertThat(stream.count(), equalTo(1L));
     }
-    /*** 
+    
     @Test
     public void testAddTrade(){
         Trade savedTrade=service.addTrade(new Trade());
         assertThat(savedTrade, equalTo(trade2));
 
     }
-    */
+    
 
     @Test
     public void testGetTradeById(){
