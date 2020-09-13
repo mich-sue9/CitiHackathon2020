@@ -28,23 +28,23 @@ public class PortfolioController {
 
 
     @RequestMapping(method = RequestMethod.GET, value = "/{id}")
-    public Optional<Portfolio> getAllInPortfolio(@PathVariable("id") String id) {
-        return service.getportfolio(new ObjectId(id));
+    public Portfolio getAllInPortfolio(@PathVariable("id") String id) throws Exception {
+        return service.getportfolio(new ObjectId(id));  // may return an empty Optional, handle in front end
     }
 
-
     @RequestMapping(method = RequestMethod.GET, value = "/history/{id}")
-    public List<Trade> getTradeHistory(@PathVariable("id") String id) {
+    public List<Trade> getTradeHistory(@PathVariable("id") String id) throws Exception {
         // want to display trade details of all trades under this portfolio
         return service.getTradeHistory(new ObjectId(id));
     }
 
 
     @RequestMapping(method = RequestMethod.GET, value = "/pending/{id}")
-    public List<Trade> getPendingTrades(@PathVariable("id") String id){
+    public List<Trade> getPendingTrades(@PathVariable("id") String id) throws Exception {
         // want to display trade details of pending trades
         return service.getPendingTrades(new ObjectId(id));
     }
+    
 
     @RequestMapping(method = RequestMethod.POST, value="/addStock/{portfolioId}/{ticker}/{quantity}")
 	public void addStock(@PathVariable("ticker") String ticker, @PathVariable("portfolioId") String portfolioId, @PathVariable("quantity") int quantity) {

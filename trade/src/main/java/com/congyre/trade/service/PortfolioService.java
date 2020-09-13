@@ -35,11 +35,19 @@ public class PortfolioService {
     private UserService userService;
 
 
-    public Optional<Portfolio> getportfolio(ObjectId id) {
-        return repo.findById(id);
+    public Portfolio getportfolio(ObjectId id) {
+        Optional<Portfolio> retrivePortfolio = repo.findById(id);// can be empty
+        if (retrivePortfolio.isPresent()){
+            log.log(Level.INFO, "Portfolio retrieved with id: " + id);
+            return retrivePortfolio.get();
+        }else{
+            log.log(Level.WARNING, "This portfolio with id: " + id + "does not exist in repo");
+			throw new ResponseStatusException(HttpStatus.NOT_FOUND); 
+        }
     }
 
-    public List<Trade> getTradeHistory(ObjectId id) {
+    
+    public List<Trade> getTradeHistory(ObjectId id) throws Exception{
         Optional<Portfolio> retrivePortfolio = repo.findById(id);// can be empty
         if (retrivePortfolio.isPresent()){
             log.log(Level.INFO, "Portfolio retrieved with id: " + id);
@@ -68,13 +76,13 @@ public class PortfolioService {
             return historicalTrades;
 
         }else{
-            log.log(Level.WARNING, "This portfolio does not exist in repo");
+            log.log(Level.WARNING, "This portfolio with id: " + id + "does not exist in repo");
 			throw new ResponseStatusException(HttpStatus.NOT_FOUND);
         }
     }
 
 
-    public List<Trade> getPendingTrades(ObjectId id) {
+    public List<Trade> getPendingTrades(ObjectId id) throws Exception{
         Optional<Portfolio> retrivePortfolio = repo.findById(id);
         if (retrivePortfolio.isPresent()){
             log.log(Level.INFO, "Portfolio retrieved with id: " + id);
@@ -103,8 +111,7 @@ public class PortfolioService {
             return pendingTrades;
         
         }else{
-            // can't find the portfolio with this id
-            log.log(Level.WARNING, "This portfolio does not exist in repo");
+            log.log(Level.WARNING, "This portfolio with id: " + id + "does not exist in repo");
 			throw new ResponseStatusException(HttpStatus.NOT_FOUND);
         }
     }
