@@ -19,8 +19,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
-import java.lang.Exception;
-
 import org.springframework.web.server.ResponseStatusException;
 
 @Service
@@ -42,35 +40,73 @@ public class PortfolioService {
     }
 
     public List<Trade> getTradeHistory(ObjectId id) {
-        Optional<Portfolio> retrivePortfolio = repo.findById(id);
-        Portfolio portfolio = retrivePortfolio.get(); // can get null
-        // want to add null portfolio exception handling?
+        Optional<Portfolio> retrivePortfolio = repo.findById(id);// can be empty
+        if (retrivePortfolio.isPresent()){
+            log.log(Level.INFO, "Portfolio retrieved with id: " + id);
+            log.log(Level.INFO, "Trying to get gistorical trades of the portfolio with id: " + id);
+            
+            Portfolio portfolio = retrivePortfolio.get();
 
-        // get historical trades
-        List<ObjectId> historicalIds = portfolio.getHistory();
-        List<Trade> historicalTrades = new ArrayList<Trade>();
-        for (ObjectId tradeId : historicalIds){
-            Optional<Trade> getATrade = tradeService.getTradeById(tradeId);
-            Trade aTrade = getATrade.get(); // can get null?
-            historicalTrades.add(aTrade);
+            // get historical trades
+            List<ObjectId> historicalIds = portfolio.getHistory();
+            List<Trade> historicalTrades = new ArrayList<Trade>();
+
+            for (ObjectId tradeId : historicalIds){
+                Optional<Trade> getATrade = tradeService.getTradeById(tradeId); // can be empty
+
+                // add the trade into the return list, if we can find it succesfully
+                if(getATrade.isPresent()){
+                    Trade aTrade = getATrade.get();
+                    historicalTrades.add(aTrade);
+                }else{
+                    log.log(Level.WARNING, "Cannot find the stock with id: " + tradeId 
+                            + " in the trade history of the portfolio: " + id);
+                    throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR); 
+                    // trade not found error happens when the addTrade function is not working properly
+                }
+            }
+            return historicalTrades;
+
+        }else{
+            log.log(Level.WARNING, "This portfolio does not exist in repo");
+			throw new ResponseStatusException(HttpStatus.NOT_FOUND);
         }
-        return historicalTrades;
     }
+
 
     public List<Trade> getPendingTrades(ObjectId id) {
         Optional<Portfolio> retrivePortfolio = repo.findById(id);
-        Portfolio portfolio = retrivePortfolio.get(); // can get null
-        // want to add null portfolio exception handling?
+        if (retrivePortfolio.isPresent()){
+            log.log(Level.INFO, "Portfolio retrieved with id: " + id);
+            log.log(Level.INFO, "Trying to get pending trades of the portfolio with id: " + id);
+            
+            Portfolio portfolio = retrivePortfolio.get();
 
-        // get pending trades
-        List<ObjectId> pendingIds = portfolio.getHistory();
-        List<Trade> pendingTrades = new ArrayList<Trade>();
-        for (ObjectId tradeId : pendingIds){
-            Optional<Trade> getATrade = tradeService.getTradeById(tradeId);
-            Trade aTrade = getATrade.get(); // can get null?
-            pendingTrades.add(aTrade);
+            // get historical trades
+            List<ObjectId> pendingIds = portfolio.getHistory();
+            List<Trade> pendingTrades = new ArrayList<Trade>();
+
+            for (ObjectId tradeId : pendingIds){
+                Optional<Trade> getATrade = tradeService.getTradeById(tradeId);// can be empty
+
+                // add the trade into the return list, if we can find it succesfully
+                if(getATrade.isPresent()){
+                    Trade aTrade = getATrade.get();
+                    pendingTrades.add(aTrade);
+                }else{
+                    log.log(Level.WARNING, "Cannot find the stock with id: " + tradeId 
+                            + " in the trade history of the portfolio: " + id);
+                    throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR); 
+                    // trade not found error happens when the addTrade function is not working properly
+                }
+            }
+            return pendingTrades;
+        
+        }else{
+            // can't find the protfolio with this id
+            log.log(Level.WARNING, "This portfolio does not exist in repo");
+			throw new ResponseStatusException(HttpStatus.NOT_FOUND);
         }
-        return pendingTrades;
     }
 
 
@@ -91,6 +127,7 @@ public class PortfolioService {
         return repo.insert(newPortfolio);
     }
 
+
     // Called when TradeService calls add Trade
     public void addTrade(ObjectId tradeId, ObjectId portfolioId){
         Optional<Portfolio> retrievePortfolio = repo.findById(portfolioId);
@@ -106,6 +143,7 @@ public class PortfolioService {
             repo.save(portfolio);
         }
     }
+
 
     public void addStock(String ticker, int quantity, ObjectId portfolioId){
         try{
@@ -126,6 +164,7 @@ public class PortfolioService {
             log.log(Level.WARNING, "This portfolio does not exist in repo");
         }
     }
+
 
     public void removeStock(String ticker, int quantity, ObjectId portfolioId){
         try{
@@ -150,6 +189,7 @@ public class PortfolioService {
         
     }
     
+
     public Portfolio getPortfolio(ObjectId portfolioId){
         Optional<Portfolio> retrievePortfolio = repo.findById(portfolioId);
         if (!retrievePortfolio.isPresent()){
