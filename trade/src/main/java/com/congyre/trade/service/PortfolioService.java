@@ -127,8 +127,8 @@ public class PortfolioService {
         port.setUserId(userId);
         //create an id for the port
         ObjectId pId = repo.insert(port).getId();
-        if(curUser.getPortfolioList() == null)
-            curUser.setPortfolioList(new ArrayList<>());
+        // if(curUser.getPortfolioList() == null)
+        //     curUser.setPortfolioList(new ArrayList<>());
         //add id to user
         curUser.addToPortfolio(pId);
         //update user by adding current portfolio to user 
@@ -224,12 +224,15 @@ public class PortfolioService {
         //update the outstandinList for each portfolio we have
         for(Portfolio p: portList){
             for(ObjectId id:p.getOutstandingList()){
-                //check the status of outstanding list 
+                //check the status of outstanding list              
+                curTrade = tradeService.getTradeById(id).orElse(null);
 
                 //check if the outstanding is rejected, if yes remove from outstanding list
-                curTrade = tradeService.getTradeById(id).orElse(null);
-                if(curTrade != null & curTrade.gettStatus()==TradeStatus.REJECTED)
+                if(curTrade != null & curTrade.gettStatus()==TradeStatus.REJECTED){
                     p.removeTradeIdFromOutstanding(id);
+                    repo.save(p);
+                }
+                   
                 //if current trade is not null and the current trade has been fulfilled
                 if(curTrade != null & curTrade.gettStatus()==TradeStatus.FILLED){
                     //remove the trade from the outStandinglist
