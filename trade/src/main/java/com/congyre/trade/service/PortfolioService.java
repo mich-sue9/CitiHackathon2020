@@ -124,6 +124,8 @@ public class PortfolioService {
         curUser.addToPortfolio(port.getId());
         //update user by adding current portfolio to user 
         userService.updateUser(curUser);
+
+        port.setUserId(userId);
         repo.save(port);        
     }
 
