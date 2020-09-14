@@ -1,2 +1,0 @@
-POST http://localhost:8080/api/portfolios/addStock/PORTFOLIOID/TICKER/AMOUNT HTTP/1.1
-content-type: application/json
