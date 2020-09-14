@@ -207,7 +207,7 @@ public class PortfolioService {
     }
 
     
-    @Scheduled(fixedDelay = 1000)
+    @Scheduled(fixedRate=10000)
     public void scheduleUpdateOutstandingTrade() {
         log.info("start the interval call to update the outsanding trade for all the portfolios in dbs");
         Trade curTrade;
@@ -227,9 +227,15 @@ public class PortfolioService {
                     expense = curTrade.getQuantity()*curTrade.getRequestPrice();
                     p.setCashOnHand(p.getCashOnHand()+expense);
                     p.setTotalExpense(p.getTotalExpense()+expense);
-                    
+                
                     //save to repo
                     repo.save(p);
+
+                    //add stock or remove stock according to the trade
+                    if(curTrade.getQuantity() > 0) 
+                        addStock(curTrade.getStockTicker(), curTrade.getQuantity(), p.getId());
+                    else
+                        removeStock(curTrade.getStockTicker(), Math.abs(curTrade.getQuantity()), p.getId());
                    
                 }
 
