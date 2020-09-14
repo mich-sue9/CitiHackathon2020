@@ -1,8 +1,8 @@
-POST http://localhost:8080/api/trades/addTrade/5f5ecf766bf9793a7412d8f1 HTTP/1.1
+POST http://localhost:8080/api/trades/addTrade/5f5fa92c5058253a49e97c18 HTTP/1.1
 content-type: application/json
 
 {
-    "stockTicker": "AMZN",
+    "stockTicker": "APPL",
     "quantity": 3,
     "requestPrice": 3132.58,
     "tStatus": "CREATED"
