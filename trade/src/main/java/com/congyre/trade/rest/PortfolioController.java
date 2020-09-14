@@ -84,8 +84,8 @@ public class PortfolioController {
 
   
     @RequestMapping(method = RequestMethod.POST, value="/addPortfolio/{userId}")
-    public void addPortfolio(@PathVariable ObjectId userId, @RequestBody Portfolio port){
-        service.addPortfolio(userId, port);
+    public void addPortfolio(@PathVariable String userId, @RequestBody Portfolio port){
+        service.addPortfolio(new ObjectId(userId), port);
     }
       /*** FOR TESTING PURPOSES */
 	// public void addPortfolio() {

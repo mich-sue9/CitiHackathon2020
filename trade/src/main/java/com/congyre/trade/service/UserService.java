@@ -26,9 +26,12 @@ public class UserService {
 		return repo.findById(userId).orElse(null);
 	}
 	
-	
-	public void updateUser(User user){
-		repo.save(user);
+
+	public User updateUser(User user){
+		//if user does not have a list of portfolio , create one
+		if(user.getPortfolioList() == null)
+			user.setPortfolioList(new ArrayList<>());
+		return repo.save(user);
 	}
 	
 	public void deleteUser(ObjectId userId){

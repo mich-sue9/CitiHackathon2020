@@ -118,15 +118,21 @@ public class PortfolioService {
     }
 
 
-    public void addPortfolio(ObjectId userId, Portfolio port){
+    public void addPortfolio(ObjectId userId,Portfolio port){
         //find user by id 
         User curUser = userService.getUser(userId);
-        curUser.addToPortfolio(port.getId());
-        //update user by adding current portfolio to user 
-        userService.updateUser(curUser);
-
+        if(curUser == null) curUser = userService.updateUser(new User());
+      
+        //set userId of port
         port.setUserId(userId);
-        repo.save(port);        
+        //create an id for the port
+        ObjectId pId = repo.insert(port).getId();
+        if(curUser.getPortfolioList() == null)
+            curUser.setPortfolioList(new ArrayList<>());
+        //add id to user
+        curUser.addToPortfolio(pId);
+        //update user by adding current portfolio to user 
+        userService.updateUser(curUser);        
     }
 
     /**
@@ -219,7 +225,11 @@ public class PortfolioService {
         for(Portfolio p: portList){
             for(ObjectId id:p.getOutstandingList()){
                 //check the status of outstanding list 
+
+                //check if the outstanding is rejected, if yes remove from outstanding list
                 curTrade = tradeService.getTradeById(id).orElse(null);
+                if(curTrade != null & curTrade.gettStatus()==TradeStatus.REJECTED)
+                    p.removeTradeIdFromOutstanding(id);
                 //if current trade is not null and the current trade has been fulfilled
                 if(curTrade != null & curTrade.gettStatus()==TradeStatus.FILLED){
                     //remove the trade from the outStandinglist
@@ -227,7 +237,7 @@ public class PortfolioService {
                     
                     //set the money change
                     expense = curTrade.getQuantity()*curTrade.getRequestPrice();
-                    p.setCashOnHand(p.getCashOnHand()+expense);
+                    p.setCashOnHand(p.getCashOnHand()-expense);
                     p.setTotalExpense(p.getTotalExpense()+expense);
                 
                     //save to repo

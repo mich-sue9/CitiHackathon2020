@@ -29,8 +29,8 @@ public class UserController {
 	}
 	
 	@RequestMapping("/user/{userId}")
-	public User getUser(@PathVariable ObjectId userId) {
-		return service.getUser(userId);
+	public User getUser(@PathVariable String userId) {
+		return service.getUser(new ObjectId(userId));
 	}
 	
 	@RequestMapping(method=RequestMethod.POST, value="/user")
@@ -39,8 +39,8 @@ public class UserController {
 	}
 	
 	@RequestMapping(method=RequestMethod.DELETE, value="/user/{userId}")
-	public void deleteClient(@PathVariable ObjectId userId) {
-		service.deleteUser(userId);
+	public void deleteClient(@PathVariable String userId) {
+		service.deleteUser(new ObjectId(userId));
 	}
 }
 
