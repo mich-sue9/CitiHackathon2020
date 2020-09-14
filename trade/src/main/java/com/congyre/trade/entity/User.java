@@ -7,24 +7,24 @@ import org.springframework.data.annotation.Id;
 
 public class User {
     @Id
-	private ObjectId UserId;
-	private String UserName;
+	private ObjectId userId;
+	private String userName;
 	private List<ObjectId> portfolioList;
 
     public ObjectId getUserId() {
-        return UserId;
+        return userId;
     }
 
     public void setUserId(ObjectId userId) {
-        UserId = userId;
+        this.userId = userId;
     }
 
     public String getUserName() {
-        return UserName;
+        return userName;
     }
 
     public void setUserName(String userName) {
-        UserName = userName;
+        this.userName = userName;
     }
 
     public List<ObjectId> getPortfolioList() {

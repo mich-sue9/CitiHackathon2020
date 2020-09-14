@@ -1,5 +1,5 @@
 GET http://localhost:8080/api/portfolios/pending/33 HTTP/1.1
-content-type: application/json
+
 
 // 5f5ecf766bf9793a7412d8f1   200
 // 6f5ecf766bf9793a7412d8f1   404-not found
