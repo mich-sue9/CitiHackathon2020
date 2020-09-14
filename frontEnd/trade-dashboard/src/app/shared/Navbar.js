@@ -59,56 +59,6 @@ class Navbar extends Component {
             <li className="nav-item">
               <Dropdown alignRight>
                 <Dropdown.Toggle className="nav-link count-indicator">
-                  <i className="mdi mdi-email-outline"></i>
-                  <span className="count-symbol bg-warning"></span>
-                </Dropdown.Toggle>
-
-                <Dropdown.Menu className="preview-list navbar-dropdown">
-                  <h6 className="p-3 mb-0"><Trans>Messages</Trans></h6>
-                  <div className="dropdown-divider"></div>
-                  <Dropdown.Item className="dropdown-item preview-item" onClick={evt =>evt.preventDefault()}>
-                    <div className="preview-thumbnail">
-                      <img src={require("../../assets/images/faces/face4.jpg")} alt="user" className="profile-pic"/>
-                    </div>
-                    <div className="preview-item-content d-flex align-items-start flex-column justify-content-center">
-                      <h6 className="preview-subject ellipsis mb-1 font-weight-normal"><Trans>Mark send you a message</Trans></h6>
-                      <p className="text-gray mb-0">
-                        1 <Trans>Minutes ago</Trans>
-                      </p>
-                    </div>
-                  </Dropdown.Item>
-                  <div className="dropdown-divider"></div>
-                  <Dropdown.Item className="dropdown-item preview-item" onClick={evt =>evt.preventDefault()}>
-                    <div className="preview-thumbnail">
-                      <img src={require("../../assets/images/faces/face2.jpg")} alt="user" className="profile-pic"/>
-                    </div>
-                    <div className="preview-item-content d-flex align-items-start flex-column justify-content-center">
-                      <h6 className="preview-subject ellipsis mb-1 font-weight-normal"><Trans>Cregh send you a message</Trans></h6>
-                      <p className="text-gray mb-0">
-                        15 <Trans>Minutes ago</Trans>
-                      </p>
-                    </div>
-                  </Dropdown.Item>
-                  <div className="dropdown-divider"></div>
-                  <Dropdown.Item className="dropdown-item preview-item" onClick={evt =>evt.preventDefault()}>
-                    <div className="preview-thumbnail">
-                      <img src={require("../../assets/images/faces/face3.jpg")} alt="user" className="profile-pic"/>
-                    </div>
-                    <div className="preview-item-content d-flex align-items-start flex-column justify-content-center">
-                      <h6 className="preview-subject ellipsis mb-1 font-weight-normal"><Trans>Profile picture updated</Trans></h6>
-                      <p className="text-gray mb-0">
-                        18 <Trans>Minutes ago</Trans>
-                      </p>
-                    </div>
-                  </Dropdown.Item>
-                  <div className="dropdown-divider"></div>
-                  <h6 className="p-3 mb-0 text-center cursor-pointer">4 <Trans>new messages</Trans></h6>
-                </Dropdown.Menu>
-              </Dropdown>
-            </li>
-            <li className="nav-item">
-              <Dropdown alignRight>
-                <Dropdown.Toggle className="nav-link count-indicator">
                   <i className="mdi mdi-bell-outline"></i>
                   <span className="count-symbol bg-danger"></span>
                 </Dropdown.Toggle>
@@ -165,11 +115,6 @@ class Navbar extends Component {
               <a className="nav-link" href="!#" onClick={event => event.preventDefault()}>
                 <i className="mdi mdi-power"></i>
               </a>
-            </li>
-            <li className="nav-item nav-settings d-none d-lg-block">
-              <button type="button" className="nav-link border-0" onClick={this.toggleRightSidebar} >
-                <i className="mdi mdi-format-line-spacing"></i>
-              </button>
             </li>
           </ul>
           <button className="navbar-toggler navbar-toggler-right d-lg-none align-self-center" type="button" onClick={this.toggleOffcanvas}>
