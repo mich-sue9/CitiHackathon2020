@@ -1,7 +1,6 @@
 package com.congyre.trade.rest;
 
 import java.util.List;
-import java.util.Optional;
 import java.util.logging.Logger;
 
 import com.congyre.trade.entity.Portfolio;
@@ -10,12 +9,14 @@ import com.congyre.trade.service.PortfolioService;
 
 import org.bson.types.ObjectId;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.server.ResponseStatusException;
 
 @RestController
 @RequestMapping("/api/portfolios")
@@ -28,21 +29,46 @@ public class PortfolioController {
 
 
     @RequestMapping(method = RequestMethod.GET, value = "/{id}")
-    public Portfolio getAllInPortfolio(@PathVariable("id") String id) throws Exception {
-        return service.getportfolio(new ObjectId(id));  // may return an empty Optional, handle in front end
+    public Portfolio getAllInPortfolio(@PathVariable("id") String id){
+        if ( !ObjectId.isValid(id)){
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST);
+        }else{
+            try {
+                return service.getportfolio(new ObjectId(id));
+            } catch (Exception e) {
+                throw e;
+            }
+        }
     }
 
+
     @RequestMapping(method = RequestMethod.GET, value = "/history/{id}")
-    public List<Trade> getTradeHistory(@PathVariable("id") String id) throws Exception {
+    public List<Trade> getTradeHistory(@PathVariable("id") String id) {
         // want to display trade details of all trades under this portfolio
-        return service.getTradeHistory(new ObjectId(id));
+        if ( !ObjectId.isValid(id)){
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST);
+        }else{
+            try {
+                return service.getTradeHistory(new ObjectId(id));
+            } catch (Exception e) {
+                throw e;
+            }
+        }
     }
 
 
     @RequestMapping(method = RequestMethod.GET, value = "/pending/{id}")
-    public List<Trade> getPendingTrades(@PathVariable("id") String id) throws Exception {
+    public List<Trade> getPendingTrades(@PathVariable("id") String id){
         // want to display trade details of pending trades
-        return service.getPendingTrades(new ObjectId(id));
+        if ( !ObjectId.isValid(id)){
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST);
+        }else{
+            try {
+                return service.getPendingTrades(new ObjectId(id));
+            } catch (Exception e) {
+                throw e;
+            }
+        }
     }
     
 

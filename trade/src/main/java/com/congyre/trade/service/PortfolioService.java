@@ -38,16 +38,17 @@ public class PortfolioService {
     public Portfolio getportfolio(ObjectId id) {
         Optional<Portfolio> retrivePortfolio = repo.findById(id);// can be empty
         if (retrivePortfolio.isPresent()){
+            System.out.println("we still get here!!!!!!!!!!!!!!!!!!!!!");
             log.log(Level.INFO, "Portfolio retrieved with id: " + id);
             return retrivePortfolio.get();
         }else{
             log.log(Level.WARNING, "This portfolio with id: " + id + "does not exist in repo");
-			throw new ResponseStatusException(HttpStatus.NOT_FOUND); 
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND);
         }
     }
 
     
-    public List<Trade> getTradeHistory(ObjectId id) throws Exception{
+    public List<Trade> getTradeHistory(ObjectId id){
         Optional<Portfolio> retrivePortfolio = repo.findById(id);// can be empty
         if (retrivePortfolio.isPresent()){
             log.log(Level.INFO, "Portfolio retrieved with id: " + id);
@@ -82,7 +83,7 @@ public class PortfolioService {
     }
 
 
-    public List<Trade> getPendingTrades(ObjectId id) throws Exception{
+    public List<Trade> getPendingTrades(ObjectId id){
         Optional<Portfolio> retrivePortfolio = repo.findById(id);
         if (retrivePortfolio.isPresent()){
             log.log(Level.INFO, "Portfolio retrieved with id: " + id);
