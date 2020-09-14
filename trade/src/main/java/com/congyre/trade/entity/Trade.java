@@ -8,7 +8,7 @@ import org.springframework.data.mongodb.core.mapping.Document;
 
 @Document
 public class Trade {
-    public enum TradeStatus{CREATED, PENDING,CANCELLED,REJECTED,FILLED,PARTIALLY_FILLED,ERROR}
+    public enum TradeStatus{CREATED, PENDING,CANCELLED,REJECTED,FILLED,PARTIALLY_FILLED,ERROR,PROCESSING}
 
     @Id
     private ObjectId id;
