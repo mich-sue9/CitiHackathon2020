@@ -127,8 +127,6 @@ public class PortfolioService {
         port.setUserId(userId);
         //create an id for the port
         ObjectId pId = repo.insert(port).getId();
-        // if(curUser.getPortfolioList() == null)
-        //     curUser.setPortfolioList(new ArrayList<>());
         //add id to user
         curUser.addToPortfolio(pId);
         //update user by adding current portfolio to user 
