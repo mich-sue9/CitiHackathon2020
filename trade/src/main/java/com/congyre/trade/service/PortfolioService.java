@@ -234,7 +234,7 @@ public class PortfolioService {
                 }
                    
                 //if current trade is not null and the current trade has been fulfilled
-                if(curTrade != null & curTrade.gettStatus()==TradeStatus.FILLED){
+                else if(curTrade != null & curTrade.gettStatus()==TradeStatus.FILLED){
                     //remove the trade from the outStandinglist
                     p.removeTradeIdFromOutstanding(id);
                     
