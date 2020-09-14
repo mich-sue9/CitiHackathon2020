@@ -2,47 +2,47 @@ package com.conygre.training.tradesimulator.model;
 
 import java.util.Date;
 
+import org.bson.types.ObjectId;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 @Document
 public class Trade {
+    public enum TradeStatus{CREATED, PENDING,CANCELLED,REJECTED,FILLED,PARTIALLY_FILLED,ERROR, PROCESSING}
 
     @Id
-    private String _id;
-    private Date created = new Date(System.currentTimeMillis());
-    private TradeState state = TradeState.CREATED;
-    private TradeType type = TradeType.BUY;
-    private String ticker;
+    private ObjectId id;
+    private Date dateCreated;
+    private String stockTicker;
     private int quantity;
-    private double price;
+    private double requestPrice;
+    private TradeStatus tStatus;
 
-
-    public Date getCreated() {
-        return created;
+    public ObjectId getId() {
+        return id;
     }
 
-    public void setCreated(Date created) {
-        this.created = created;
+    public void setId(ObjectId id) {
+        this.id = id;
     }
 
-    public TradeState getState() {
-        return state;
+    public Date getDateCreated() {
+        return dateCreated;
     }
 
-    public void setState(TradeState state) {
-        this.state = state;
+    public void setDateCreated(Date dateCreated) {
+        this.dateCreated = dateCreated;
     }
 
-    public String getTicker() {
-        return ticker;
+    public String getStockTicker() {
+        return stockTicker;
     }
 
-    public void setTicker(String ticker) {
-        this.ticker = ticker;
+    public void setStockTicker(String stockTicker) {
+        this.stockTicker = stockTicker;
     }
 
-    public double getQuantity() {
+    public int getQuantity() {
         return quantity;
     }
 
@@ -50,19 +50,21 @@ public class Trade {
         this.quantity = quantity;
     }
 
-    public TradeType getType() {
-        return type;
+    public double getRequestPrice() {
+        return requestPrice;
     }
 
-    public void setType(TradeType type) {
-        this.type = type;
+    public void setRequestPrice(double requestPrice) {
+        this.requestPrice = requestPrice;
     }
 
-    public double getPrice() {
-        return price;
+    public TradeStatus gettStatus() {
+        return tStatus;
     }
 
-    public void setPrice(double price) {
-        this.price = price;
+    public void settStatus(TradeStatus tStatus) {
+        this.tStatus = tStatus;
     }
+
+    
 }

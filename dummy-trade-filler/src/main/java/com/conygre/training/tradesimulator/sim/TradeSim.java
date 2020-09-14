@@ -4,7 +4,7 @@ import java.util.List;
 
 import com.conygre.training.tradesimulator.dao.TradeMongoDao;
 import com.conygre.training.tradesimulator.model.Trade;
-import com.conygre.training.tradesimulator.model.TradeState;
+import com.conygre.training.tradesimulator.model.Trade.TradeStatus;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -22,10 +22,10 @@ public class TradeSim {
 
     @Transactional
     public List<Trade> findTradesForProcessing(){
-        List<Trade> foundTrades = tradeDao.findByState(TradeState.CREATED);
+        List<Trade> foundTrades = tradeDao.findBytStatus(TradeStatus.CREATED);
 
         for(Trade thisTrade: foundTrades) {
-            thisTrade.setState(TradeState.PROCESSING);
+            thisTrade.settStatus(TradeStatus.PROCESSING);
             tradeDao.save(thisTrade);
         }
 
@@ -34,14 +34,14 @@ public class TradeSim {
 
     @Transactional
     public List<Trade> findTradesForFilling(){
-        List<Trade> foundTrades = tradeDao.findByState(TradeState.PROCESSING);
+        List<Trade> foundTrades = tradeDao.findBytStatus(TradeStatus.PROCESSING);
 
         for(Trade thisTrade: foundTrades) {
             if((int) (Math.random()*10) > 8) {
-                thisTrade.setState(TradeState.REJECTED);
+                thisTrade.settStatus(TradeStatus.REJECTED);
             }
             else {
-                thisTrade.setState(TradeState.FILLED);
+                thisTrade.settStatus(TradeStatus.FILLED);
             }
             tradeDao.save(thisTrade);
         }
