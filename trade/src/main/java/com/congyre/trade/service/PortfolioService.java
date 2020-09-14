@@ -155,7 +155,7 @@ public class PortfolioService {
 
     public void addStock(String ticker, int quantity, ObjectId portfolioId){
         try{
-            Portfolio portfolio = getPortfolio(portfolioId);
+            Portfolio portfolio = getPortfolioRepo(portfolioId);
             HashMap<String, Stock> portfolio_stocks = portfolio.getStocks();
             if (portfolio_stocks.containsKey(ticker) == false){ //Stock does not exist in portfolio yet
                 Stock new_stock = new Stock();
@@ -176,7 +176,7 @@ public class PortfolioService {
 
     public void removeStock(String ticker, int quantity, ObjectId portfolioId){
         try{
-            Portfolio portfolio = getPortfolio(portfolioId);
+            Portfolio portfolio = getPortfolioRepo(portfolioId);
             HashMap<String, Stock> portfolio_stocks = portfolio.getStocks();
             if (portfolio_stocks.containsKey(ticker) == false){
                 log.log(Level.WARNING, "This ticker does not exist in portfolio");
@@ -198,7 +198,7 @@ public class PortfolioService {
     }
     
 
-    public Portfolio getPortfolio(ObjectId portfolioId){
+    public Portfolio getPortfolioRepo(ObjectId portfolioId){
         Optional<Portfolio> retrievePortfolio = repo.findById(portfolioId);
         if (!retrievePortfolio.isPresent()){
 			throw new ResponseStatusException(HttpStatus.NOT_FOUND);
@@ -243,9 +243,5 @@ public class PortfolioService {
             }
         }
         log.info("end of scheduled job");
-
-        
-
     }
-
 }
