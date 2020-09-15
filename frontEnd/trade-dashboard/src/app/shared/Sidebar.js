@@ -72,7 +72,7 @@ class Sidebar extends Component {
           </li>
           <li className={ this.isPathActive('/form-elements') ? 'nav-item active' : 'nav-item' }>
             <div className={ this.state.formElementsMenuOpen ? 'nav-link menu-expanded' : 'nav-link' } onClick={ () => this.toggleMenuState('formElementsMenuOpen') } data-toggle="collapse">
-              <span className="menu-title"><Trans>Form Elements</Trans></span>
+              <span className="menu-title"><Trans>Trade</Trans></span>
               <i className="menu-arrow"></i>
               <i className="mdi mdi-format-list-bulleted menu-icon"></i>
             </div>
@@ -84,7 +84,7 @@ class Sidebar extends Component {
           </li>
           <li className={ this.isPathActive('/tables') ? 'nav-item active' : 'nav-item' }>
             <div className={ this.state.tablesMenuOpen ? 'nav-link menu-expanded' : 'nav-link' } onClick={ () => this.toggleMenuState('tablesMenuOpen') } data-toggle="collapse">
-              <span className="menu-title"><Trans>Tables</Trans></span>
+              <span className="menu-title"><Trans>Portfolio</Trans></span>
               <i className="menu-arrow"></i>
               <i className="mdi mdi-table-large menu-icon"></i>
             </div>
