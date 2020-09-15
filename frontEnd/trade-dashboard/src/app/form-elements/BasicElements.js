@@ -79,15 +79,15 @@ export class BasicElements extends Component {
                 <form className="forms-sample">
                   <Form.Group>
                     <label htmlFor="exampleInputUsername1">Ticker</label>
-                    <Form.Control type="text" id="exampleInputUsername1" placeholder="Ticker" size="lg" onChange={this.tickerNameUpload} />
+                    <Form.Control type="text" id="exampleInputUsername1" placeholder="Ticker" size="lg" onChange={this.tickerNameUpload} required/>
                   </Form.Group>
                   <Form.Group>
                     <label htmlFor="exampleInputEmail1">Quantity</label>
-                    <Form.Control type="test" className="form-control" id="exampleInputEmail1" placeholder="Quantity" onChange={this.quantityUpload}/>
+                    <Form.Control type="test" className="form-control" id="exampleInputEmail1" placeholder="Quantity" onChange={this.quantityUpload} required/>
                   </Form.Group>
                   <Form.Group>
                     <label htmlFor="exampleInputPassword1">Request Price</label>
-                    <Form.Control type="text" className="form-control" id="exampleInputPassword1" placeholder="Request Price" onChange={this.requestPriceUpload}/>
+                    <Form.Control type="text" className="form-control" id="exampleInputPassword1" placeholder="Request Price" onChange={this.requestPriceUpload} required/>
                   </Form.Group>
 
                   <button type="submit" className="btn btn-gradient-primary mr-2" onClick={this.handleOrderTrade} >Submit</button>
