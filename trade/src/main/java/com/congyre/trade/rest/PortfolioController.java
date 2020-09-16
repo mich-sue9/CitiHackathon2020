@@ -1,13 +1,17 @@
 package com.congyre.trade.rest;
 
 import java.util.List;
+import java.util.logging.Level;
 import java.util.logging.Logger;
+import java.util.HashMap;
 
 import com.congyre.trade.entity.Portfolio;
 import com.congyre.trade.entity.Trade;
 import com.congyre.trade.service.PortfolioService;
 
+
 import org.bson.types.ObjectId;
+import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -27,6 +31,18 @@ public class PortfolioController {
     @Autowired
     private PortfolioService service;
 
+    /** Used to get table of stocks and their current prices */
+    @RequestMapping(method = RequestMethod.GET, value = "/getStockLivePrice/{portId}")
+    public String getStockLivePrice(@PathVariable("portId") String portId) {
+        // want to display trade details of all trades under this portfolio
+        logger.log(Level.WARNING, "called route");
+        if ( !ObjectId.isValid(portId)){
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST);
+        }else{
+            
+            return service.getTickerPrices(new ObjectId(portId)).toString();
+        }
+    }
 
     @RequestMapping(method = RequestMethod.GET, value = "/{id}")
     public Portfolio getAllInPortfolio(@PathVariable("id") String id){

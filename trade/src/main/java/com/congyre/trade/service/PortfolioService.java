@@ -21,6 +21,12 @@ import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
+import com.mashape.unirest.http.HttpResponse;
+import com.mashape.unirest.http.JsonNode;
+import com.mashape.unirest.http.Unirest;
+
+import org.json.JSONArray;
+import org.json.JSONObject;
 @Service
 public class PortfolioService {
     private static Logger log = Logger.getLogger(PortfolioService.class.getName());
@@ -34,6 +40,39 @@ public class PortfolioService {
     @Autowired
     private UserService userService;
 
+
+    public JSONObject getTickerPrices(ObjectId portId){
+        HashMap<String, Stock> tickerStockMapping = getStocks(portId);
+        JSONObject returnObj = new JSONObject();
+        double totalValuation = 0;
+        JSONArray stockList = new JSONArray();
+        for (String ticker : tickerStockMapping.keySet()){
+            try{
+                HttpResponse<JsonNode> response = Unirest
+                .get( "https://www.alphavantage.co/query?function=TIME_SERIES_INTRADAY&symbol={tickerName}&interval=1min&outputSize=compact&apikey=1E0JKXX907FC1HEP")
+                .routeParam("tickerName", ticker)
+                .asJson();
+                JSONObject completeObj = response.getBody().getObject();
+                String lastRefreshed = completeObj.getJSONObject("Meta Data").getString("3. Last Refreshed");
+                String lastRefreshedPrice = completeObj.getJSONObject("Time Series (1min)").getJSONObject(lastRefreshed).getString("4. close");
+                int quantity = tickerStockMapping.get(ticker).getAmount();
+                JSONObject tickerInfo = new JSONObject();
+                tickerInfo.put("ticker", ticker);
+                tickerInfo.put("price", lastRefreshedPrice);
+                tickerInfo.put("quantity", tickerStockMapping.get(ticker).getAmount());
+                totalValuation += quantity* Double.parseDouble(lastRefreshedPrice);
+                stockList.put(tickerInfo);
+                //returnObj.put(ticker, tickerInfo);
+                log.log(Level.WARNING, "Ticker: " + ticker + " price: " + lastRefreshedPrice);     
+                }
+            catch (Exception ex){
+                log.log(Level.WARNING, "Incorrect Ticker:" + ex.getMessage());
+            }
+        }
+        returnObj.put("valuation", totalValuation);
+        returnObj.put("stockPrice", stockList);
+        return returnObj;
+    }
 
     public Portfolio getportfolio(ObjectId id) {
         Optional<Portfolio> retrivePortfolio = repo.findById(id);// can be empty
@@ -117,6 +156,18 @@ public class PortfolioService {
         }
     }
 
+    /*** Used for getting  live stock  data */
+    public HashMap<String, Stock> getStocks(ObjectId portId){
+        try{
+            Portfolio portfolio = getPortfolioRepo(portId);
+            HashMap<String, Stock> portfolio_stocks = portfolio.getStocks();
+            return portfolio_stocks;
+        }
+        catch(ResponseStatusException ex){
+            log.log(Level.WARNING, "This portfolio does not exist in repo");
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND);
+        }
+    }
 
     public void addPortfolio(ObjectId userId,Portfolio port){
         //find user by id 
