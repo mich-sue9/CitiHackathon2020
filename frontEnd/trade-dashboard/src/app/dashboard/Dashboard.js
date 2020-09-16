@@ -14,8 +14,10 @@ export class Dashboard extends Component {
   };
   constructor(props){
     super(props)
+    //this.fetchPrices = this.fetchPrices.bind(this);
     this.state = {
       error: false,
+      intervalId:"",
       portfolioId: "5f623103c7e8ad1aca356733",
       liveData:[],
       valuation : "",
@@ -93,13 +95,8 @@ export class Dashboard extends Component {
   renderStockList(stocklist){
     //let tableBody = stocklist.map((employee));
   }
-  componentDidMount(){
-    //get portfoliodata
-    this.loadPortfolio();
 
-    // Retrieve stock profile valuation & stock prices 
-    console.log("Component mounted");
-    var url = 
+  fetchPrices = () => {
     fetch('http://localhost:8080/'+'api/portfolios/getStockLivePrice/'+this.state.portfolioId, {
       method: "GET"})
         .then(res => res.json())
@@ -110,7 +107,44 @@ export class Dashboard extends Component {
           });
           this.setState({valuation: formatter.format(data.valuation),
                           liveData: data.stockPrice});});
-        
+  }
+  componentDidMount(){
+    //get portfoliodata
+    this.loadPortfolio();
+
+    // Retrieve stock profile valuation & stock prices 
+    console.log("Component mounted");
+    this.fetchPrices();
+    this.fetchPricesRefresher = setInterval(() => {
+        this.fetchPrices();
+    }, 60000)
+    /****
+    this.intervalId = setInterval(() => {
+      fetch('http://localhost:8080/'+'api/portfolios/getStockLivePrice/'+this.state.portfolioId, {
+      method: "GET"})
+        .then(res => res.json())
+        .then( data => {
+          var formatter = new Intl.NumberFormat('en-US', {
+            style: 'currency',
+            currency: 'USD',
+          });
+          this.setState({valuation: formatter.format(data.valuation),
+                          liveData: data.stockPrice});});
+    },5000)
+    **/
+    //this.fetchPrices;
+    /*
+    fetch('http://localhost:8080/'+'api/portfolios/getStockLivePrice/'+this.state.portfolioId, {
+      method: "GET"})
+        .then(res => res.json())
+        .then( data => {
+          var formatter = new Intl.NumberFormat('en-US', {
+            style: 'currency',
+            currency: 'USD',
+          });
+          this.setState({valuation: formatter.format(data.valuation),
+                          liveData: data.stockPrice});});
+    */
 
 
     //your code
@@ -214,7 +248,9 @@ export class Dashboard extends Component {
     this.setState({visitSaleData: newVisitSaleData, trafficData:newTrafficData} )
   }
 
-
+  componentWillUnmount(){
+    clearInterval(this.fetchPricesRefresher);
+  }
 
   toggleProBanner() {
     document.querySelector('.proBanner').classList.toggle("hide");

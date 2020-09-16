@@ -49,10 +49,11 @@ public class PortfolioService {
         for (String ticker : tickerStockMapping.keySet()){
             try{
                 HttpResponse<JsonNode> response = Unirest
-                .get( "https://www.alphavantage.co/query?function=TIME_SERIES_INTRADAY&symbol={tickerName}&interval=1min&outputSize=compact&apikey=1E0JKXX907FC1HEP")
+                .get( "https://www.alphavantage.co/query?function=TIME_SERIES_INTRADAY&symbol={tickerName}&interval=1min&outputSize=compact&apikey=NQWYX4PJ8QFOUY9I")
                 .routeParam("tickerName", ticker)
                 .asJson();
                 JSONObject completeObj = response.getBody().getObject();
+                log.log(Level.WARNING, completeObj.toString());
                 String lastRefreshed = completeObj.getJSONObject("Meta Data").getString("3. Last Refreshed");
                 String lastRefreshedPrice = completeObj.getJSONObject("Time Series (1min)").getJSONObject(lastRefreshed).getString("4. close");
                 int quantity = tickerStockMapping.get(ticker).getAmount();
@@ -66,7 +67,8 @@ public class PortfolioService {
                 log.log(Level.WARNING, "Ticker: " + ticker + " price: " + lastRefreshedPrice);     
                 }
             catch (Exception ex){
-                log.log(Level.WARNING, "Incorrect Ticker:" + ex.getMessage());
+                log.log(Level.WARNING, "Incorrect Ticker:" + ticker + ex.getMessage());
+
             }
         }
         returnObj.put("valuation", totalValuation);
