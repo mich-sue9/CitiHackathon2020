@@ -84,13 +84,13 @@ class Sidebar extends Component {
           </li>
           <li className={ this.isPathActive('/tables') ? 'nav-item active' : 'nav-item' }>
             <div className={ this.state.tablesMenuOpen ? 'nav-link menu-expanded' : 'nav-link' } onClick={ () => this.toggleMenuState('tablesMenuOpen') } data-toggle="collapse">
-              <span className="menu-title"><Trans>Portfolio</Trans></span>
+              <span className="menu-title"><Trans>Trade history</Trans></span>
               <i className="menu-arrow"></i>
               <i className="mdi mdi-table-large menu-icon"></i>
             </div>
             <Collapse in={ this.state.tablesMenuOpen }>
               <ul className="nav flex-column sub-menu">
-                <li className="nav-item"> <Link className={ this.isPathActive('/tables/basic-table') ? 'nav-link active' : 'nav-link' } to="/tables/basic-table"><Trans>Portfolio</Trans></Link></li>
+                <li className="nav-item"> <Link className={ this.isPathActive('/tables/basic-table') ? 'nav-link active' : 'nav-link' } to="/tables/basic-table"><Trans>check trade history</Trans></Link></li>
               </ul>
             </Collapse>
           </li>
