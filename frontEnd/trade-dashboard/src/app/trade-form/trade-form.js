@@ -3,7 +3,7 @@ import { Form } from 'react-bootstrap';
 import DatePicker from "react-datepicker";
 import bsCustomFileInput from 'bs-custom-file-input'
 
-export class BasicElements extends Component {
+export class TradeForm extends Component {
   constructor(props){
     super(props);
     this.state = {
@@ -102,4 +102,4 @@ export class BasicElements extends Component {
   }
 }
 
-export default BasicElements
+export default TradeForm
