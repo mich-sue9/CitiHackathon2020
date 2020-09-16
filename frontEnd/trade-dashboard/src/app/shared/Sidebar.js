@@ -35,7 +35,7 @@ class Sidebar extends Component {
     const dropdownPaths = [
       {path:'/apps', state: 'appsMenuOpen'},
       {path:'/advanced-ui', state: 'advancedUiMenuOpen'},
-      {path:'/form-elements', state: 'formElementsMenuOpen'},
+      {path:'/trade-form', state: 'tradeFormMenuOpen'},
       {path:'/tables', state: 'tablesMenuOpen'},
     ];
 
@@ -70,15 +70,15 @@ class Sidebar extends Component {
               <i className="mdi mdi-home menu-icon"></i>
             </Link>
           </li>
-          <li className={ this.isPathActive('/form-elements') ? 'nav-item active' : 'nav-item' }>
-            <div className={ this.state.formElementsMenuOpen ? 'nav-link menu-expanded' : 'nav-link' } onClick={ () => this.toggleMenuState('formElementsMenuOpen') } data-toggle="collapse">
+          <li className={ this.isPathActive('/trade-form') ? 'nav-item active' : 'nav-item' }>
+            <div className={ this.state.tradeFormMenuOpen ? 'nav-link menu-expanded' : 'nav-link' } onClick={ () => this.toggleMenuState('tradeFormMenuOpen') } data-toggle="collapse">
               <span className="menu-title"><Trans>Trade</Trans></span>
               <i className="menu-arrow"></i>
               <i className="mdi mdi-format-list-bulleted menu-icon"></i>
             </div>
-            <Collapse in={ this.state.formElementsMenuOpen }>
+            <Collapse in={ this.state.tradeFormMenuOpen }>
               <ul className="nav flex-column sub-menu">
-                <li className="nav-item"> <Link className={ this.isPathActive('/form-elements/basic-elements') ? 'nav-link active' : 'nav-link' } to="/form-elements/basic-elements"><Trans>Trade request</Trans></Link></li>
+                <li className="nav-item"> <Link className={ this.isPathActive('/trade-form/trade-form') ? 'nav-link active' : 'nav-link' } to="/trade-form/trade-form"><Trans>Trade request</Trans></Link></li>
               </ul>
             </Collapse>
           </li>
