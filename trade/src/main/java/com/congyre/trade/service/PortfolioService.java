@@ -21,6 +21,10 @@ import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
+import com.mashape.unirest.http.HttpResponse;
+import com.mashape.unirest.http.JsonNode;
+import com.mashape.unirest.http.Unirest;
+import org.json.JSONObject;
 @Service
 public class PortfolioService {
     private static Logger log = Logger.getLogger(PortfolioService.class.getName());
@@ -34,6 +38,35 @@ public class PortfolioService {
     @Autowired
     private UserService userService;
 
+
+    public JSONObject getTickerPrices(ObjectId portId){
+        HashMap<String, Stock> tickerStockMapping = getStocks(portId);
+        JSONObject returnObj = new JSONObject();
+        double totalValuation = 0;
+        for (String ticker : tickerStockMapping.keySet()){
+            try{
+                HttpResponse<JsonNode> response = Unirest
+                .get( "https://www.alphavantage.co/query?function=TIME_SERIES_INTRADAY&symbol={tickerName}&interval=1min&outputSize=compact&apikey=1E0JKXX907FC1HEP")
+                .routeParam("tickerName", ticker)
+                .asJson();
+                JSONObject completeObj = response.getBody().getObject();
+                String lastRefreshed = completeObj.getJSONObject("Meta Data").getString("3. Last Refreshed");
+                String lastRefreshedPrice = completeObj.getJSONObject("Time Series (1min)").getJSONObject(lastRefreshed).getString("4. close");
+                int quantity = tickerStockMapping.get(ticker).getAmount();
+                JSONObject tickerInfo = new JSONObject();
+                tickerInfo.put("current price", lastRefreshedPrice);
+                tickerInfo.put("quantity", tickerStockMapping.get(ticker).getAmount());
+                totalValuation += quantity* Double.parseDouble(lastRefreshedPrice);
+                returnObj.put(ticker, tickerInfo);
+                log.log(Level.WARNING, "Ticker: " + ticker + " price: " + lastRefreshedPrice);     
+                }
+            catch (Exception ex){
+                log.log(Level.WARNING, ex.getMessage());
+            }
+        }
+        returnObj.put("valuation", totalValuation);
+        return returnObj;
+    }
 
     public Portfolio getportfolio(ObjectId id) {
         Optional<Portfolio> retrivePortfolio = repo.findById(id);// can be empty
