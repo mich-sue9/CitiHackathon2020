@@ -6,6 +6,7 @@ export class BasicTable extends Component {
   constructor(props) {
     super(props);
     this.state = {
+      portfolioId: "5f6296c2200dd06478c0ede0",
       trades:[]
     };
   }
@@ -17,7 +18,7 @@ export class BasicTable extends Component {
   }
 
   loadTradeHistory = () => {
-    let response = fetch('http://localhost:8080/api/trades');
+    let response = fetch('http://localhost:8080/api/portfolios/history/' + this.state.portfolioId);
 
     response
       .then(res => res.json())
