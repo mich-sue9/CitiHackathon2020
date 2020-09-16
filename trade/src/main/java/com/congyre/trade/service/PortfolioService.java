@@ -117,6 +117,18 @@ public class PortfolioService {
         }
     }
 
+    /*** Used for getting  live stock  data */
+    public HashMap<String, Stock> getStocks(ObjectId portId){
+        try{
+            Portfolio portfolio = getPortfolioRepo(portId);
+            HashMap<String, Stock> portfolio_stocks = portfolio.getStocks();
+            return portfolio_stocks;
+        }
+        catch(ResponseStatusException ex){
+            log.log(Level.WARNING, "This portfolio does not exist in repo");
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND);
+        }
+    }
 
     public void addPortfolio(ObjectId userId,Portfolio port){
         //find user by id 

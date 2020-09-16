@@ -2,5 +2,5 @@
 // content-type: application/json
 
 
-POST http://localhost:8080/api/portfolios/addStock/5f5ecf766bf9793a7412d8f1/AAPL/100 HTTP/1.1
+POST http://localhost:8080/api/portfolios/addStock/5f623103c7e8ad1aca356733/IBM/100 HTTP/1.1
 content-type: application/json
