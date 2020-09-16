@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import {Bar, Doughnut} from 'react-chartjs-2';
+import {getPortfolio} from '../api/PortfolioAPI';
 
 
 
@@ -56,11 +57,41 @@ export class Dashboard extends Component {
           }
         }
       },
+      portfolioData:"",
+      portfolioId:"",
+      loadPortfolio: false,
     } 
   }
   
-  
+  //get the portfolioData upon load
+  loadPortfolio(){
+    //get the reponse from the backend
+    let response = getPortfolio(this.state.portfolioId);
+
+    //parse response
+    response
+      .then(resp => resp.json())
+      .then(
+        result => {
+          this.setState({
+            loadPortfolio: true,
+            portfolioData: result,
+          });
+        },
+        err =>{
+          this.setState({
+            loadPortfolio:false,
+          });
+        }
+      );   
+  }
+
+  renderStockList(stocklist){
+    //let tableBody = stocklist.map((employee));
+  }
   componentDidMount(){
+    //get portfoliodata
+    this.loadPortfolio();
     //your code
     var ctx = document.getElementById('visitSaleChart').getContext("2d")
     var gradientBar1 = ctx.createLinearGradient(0, 0, 0, 181)

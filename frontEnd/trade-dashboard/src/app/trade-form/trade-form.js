@@ -62,10 +62,9 @@ export class TradeForm extends Component {
     return (
       <div>
         <div className="page-header">
-          <h3 className="page-title"> Form elements </h3>
+          <h3 className="page-title"> Trade Submission </h3>
           <nav aria-label="breadcrumb">
             <ol className="breadcrumb">
-              <li className="breadcrumb-item"><a href="!#" onClick={event => event.preventDefault()}>Forms</a></li>
               <li className="breadcrumb-item active" aria-current="page">Trade Sumbit</li>
             </ol>
           </nav>
