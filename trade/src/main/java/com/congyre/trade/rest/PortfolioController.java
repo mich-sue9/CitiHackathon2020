@@ -1,6 +1,7 @@
 package com.congyre.trade.rest;
 
 import java.util.List;
+import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.HashMap;
 
@@ -34,6 +35,7 @@ public class PortfolioController {
     @RequestMapping(method = RequestMethod.GET, value = "/getStockLivePrice/{portId}")
     public String getStockLivePrice(@PathVariable("portId") String portId) {
         // want to display trade details of all trades under this portfolio
+        logger.log(Level.WARNING, "called route");
         if ( !ObjectId.isValid(portId)){
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST);
         }else{

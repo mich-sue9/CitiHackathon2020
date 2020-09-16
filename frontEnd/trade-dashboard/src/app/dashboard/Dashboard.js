@@ -7,12 +7,17 @@ import {Bar, Doughnut} from 'react-chartjs-2';
 export class Dashboard extends Component {
   handleChange = date => {
     this.setState({
-      startDate: date
+      startDate: date,
+
     });
   };
   constructor(props){
     super(props)
     this.state = {
+      error: false,
+      portfolioId: "5f623103c7e8ad1aca356733",
+      liveData:[],
+      valuation : "",
       startDate: new Date(),
       visitSaleData: {},
       visitSaleOptions: {
@@ -61,6 +66,21 @@ export class Dashboard extends Component {
   
   
   componentDidMount(){
+    // Retrieve stock profile valuation & stock prices 
+    console.log("Component mounted");
+    var url = 
+    fetch('http://localhost:8080/'+'api/portfolios/getStockLivePrice/'+this.state.portfolioId, {
+      method: "GET"})
+        .then(res => res.json())
+        .then( data => {
+          var formatter = new Intl.NumberFormat('en-US', {
+            style: 'currency',
+            currency: 'USD',
+          });
+          this.setState({valuation: formatter.format(data.valuation),
+                          liveData: data.stockPrice});});
+        
+
     //your code
     var ctx = document.getElementById('visitSaleChart').getContext("2d")
     var gradientBar1 = ctx.createLinearGradient(0, 0, 0, 181)
@@ -189,10 +209,10 @@ export class Dashboard extends Component {
             <div className="card bg-gradient-danger card-img-holder text-white">
               <div className="card-body">
                 <img src={require("../../assets/images/dashboard/circle.svg")} className="card-img-absolute" alt="circle" />
-                <h4 className="font-weight-normal mb-3">Weekly Sales <i className="mdi mdi-chart-line mdi-24px float-right"></i>
+                <h4 className="font-weight-normal mb-3">Portfolio Valuation <i className="mdi mdi-chart-line mdi-24px float-right"></i>
                 </h4>
-                <h2 className="mb-5">$ 15,0000</h2>
-                <h6 className="card-text">Increased by 60%</h6>
+                <h2 className="mb-5"> {this.state.valuation} </h2>
+                <h6 className="card-text"> </h6>
               </div>
             </div>
           </div>
@@ -275,70 +295,31 @@ export class Dashboard extends Component {
           <div className="col-12 grid-margin">
             <div className="card">
               <div className="card-body">
-                <h4 className="card-title">Trade history</h4>
+                <h4 className="card-title">Live Stock Prices*</h4>
                 <div className="table-responsive">
                   <table className="table">
                     <thead>
                       <tr>
-                        <th> Date </th>
                         <th> Ticker </th>
-                        <th> Quantity </th>
-                        <th> price </th>
-                        <th> Type </th>
-                        <th> Status </th>
-                        <th> Total investment </th>
-                        <th> Last Close </th>
-
+                        <th> Quantity owned in Portfolio </th>
+                        <th> Last Close price </th>
                       </tr>
                     </thead>
                     <tbody>
-                      <tr>
-                        <td>
-                          <img src={require("../../assets/images/faces/face1.jpg")} className="mr-2" alt="face" /> David Grey </td>
-                        <td> Fund is not recieved </td>
-                        <td>
-                          <label className="badge badge-gradient-success">DONE</label>
-                        </td>
-                        <td> Dec 5, 2017 </td>
-                        <td> WD-12345 </td>
-                      </tr>
-                      <tr>
-                        <td>
-                          <img src={require("../../assets/images/faces/face2.jpg")} className="mr-2" alt="face" /> Stella Johnson </td>
-                        <td> High loading time </td>
-                        <td>
-                          <label className="badge badge-gradient-warning">PROGRESS</label>
-                        </td>
-                        <td> Dec 12, 2017 </td>
-                        <td> WD-12346 </td>
-                      </tr>
-                      <tr>
-                        <td>
-                          <img src={require("../../assets/images/faces/face3.jpg")} className="mr-2" alt="face" /> Marina Michel </td>
-                        <td> Website down for one week </td>
-                        <td>
-                          <label className="badge badge-gradient-info">ON HOLD</label>
-                        </td>
-                        <td> Dec 16, 2017 </td>
-                        <td> WD-12347 </td>
-                      </tr>
-                      <tr>
-                        <td>
-                          <img src={require("../../assets/images/faces/face4.jpg")} className="mr-2" alt="face" /> John Doe </td>
-                        <td> Loosing control on server </td>
-                        <td>
-                          <label className="badge badge-gradient-danger">REJECTED</label>
-                        </td>
-                        <td> Dec 3, 2017 </td>
-                        <td> WD-12348 </td>
-                      </tr>
+                        {this.state.liveData.map((stock)=> {
+                           var formatter = new Intl.NumberFormat('en-US', {
+                            style: 'currency',
+                            currency: 'USD',
+                          });
+                          return(
+                            <tr>
+                              <td> {stock.ticker} </td>
+                              <td> {stock.quantity} </td>
+                              <td> {formatter.format(stock.price)} </td>
+                            </tr> );
+                        })}                       
                     </tbody>
-                  </table>
-
-
-
-
-                  
+                  </table>                 
                 </div>
               </div>
             </div>

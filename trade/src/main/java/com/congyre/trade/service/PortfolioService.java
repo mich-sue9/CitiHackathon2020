@@ -24,6 +24,8 @@ import org.springframework.web.server.ResponseStatusException;
 import com.mashape.unirest.http.HttpResponse;
 import com.mashape.unirest.http.JsonNode;
 import com.mashape.unirest.http.Unirest;
+
+import org.json.JSONArray;
 import org.json.JSONObject;
 @Service
 public class PortfolioService {
@@ -43,6 +45,7 @@ public class PortfolioService {
         HashMap<String, Stock> tickerStockMapping = getStocks(portId);
         JSONObject returnObj = new JSONObject();
         double totalValuation = 0;
+        JSONArray stockList = new JSONArray();
         for (String ticker : tickerStockMapping.keySet()){
             try{
                 HttpResponse<JsonNode> response = Unirest
@@ -54,17 +57,20 @@ public class PortfolioService {
                 String lastRefreshedPrice = completeObj.getJSONObject("Time Series (1min)").getJSONObject(lastRefreshed).getString("4. close");
                 int quantity = tickerStockMapping.get(ticker).getAmount();
                 JSONObject tickerInfo = new JSONObject();
-                tickerInfo.put("current price", lastRefreshedPrice);
+                tickerInfo.put("ticker", ticker);
+                tickerInfo.put("price", lastRefreshedPrice);
                 tickerInfo.put("quantity", tickerStockMapping.get(ticker).getAmount());
                 totalValuation += quantity* Double.parseDouble(lastRefreshedPrice);
-                returnObj.put(ticker, tickerInfo);
+                stockList.put(tickerInfo);
+                //returnObj.put(ticker, tickerInfo);
                 log.log(Level.WARNING, "Ticker: " + ticker + " price: " + lastRefreshedPrice);     
                 }
             catch (Exception ex){
-                log.log(Level.WARNING, ex.getMessage());
+                log.log(Level.WARNING, "Incorrect Ticker:" + ex.getMessage());
             }
         }
         returnObj.put("valuation", totalValuation);
+        returnObj.put("stockPrice", stockList);
         return returnObj;
     }
 
