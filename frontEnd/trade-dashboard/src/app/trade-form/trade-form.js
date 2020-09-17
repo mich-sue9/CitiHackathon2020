@@ -1,8 +1,6 @@
 import React, { Component } from 'react';
 import { Form } from 'react-bootstrap';
-import {portId} from '../api/PortfolioAPI';
-import DatePicker from "react-datepicker";
-import bsCustomFileInput from 'bs-custom-file-input'
+import { portId } from '../api/PortfolioAPI';
 
 
 
@@ -15,7 +13,7 @@ export class TradeForm extends Component {
       ticker: "",
       quantity: 0,
       requestPrice: 0,
-      tStatus:"CREATED",
+      tStatus: "CREATED",
       portfolioId: portId,
       isLoaded: false,
 
@@ -55,7 +53,7 @@ export class TradeForm extends Component {
     trade.quantity = this.state.quantity;
     trade.requestPrice = this.state.requestPrice;
     trade.tStatus = this.state.tStatus;
-    let response = fetch('http://localhost:8080/' + "api/trades/addTrade/" + this.state.portfolioId, {
+    let response = fetch("http://localhost:8080/api/trades/addTrade/" + this.state.portfolioId, {
       method: "POST",
       headers: {
         'Content-Type': 'application/json;charset=utf-8'
@@ -89,16 +87,15 @@ export class TradeForm extends Component {
   }
 
 
-  
   componentDidMount() {
     //bsCustomFileInput.init()
     this.loadPendingTrades();
     this.pendingTradeRefresher = setInterval(() => {
       this.loadPendingTrades();
-    },5000)
+    }, 5000)
   }
 
-  componentWillUnmount(){
+  componentWillUnmount() {
     clearInterval(this.pendingTradeRefresher)
   }
 
@@ -164,7 +161,7 @@ export class TradeForm extends Component {
                     <tbody>
                       {this.state.trades.map((trade) =>
                         <tr>
-                          <td>{trade.dateCreated} </td>
+                          <td>{trade.dateCreated.substring(0,10)} {trade.dateCreated.substring(11,19)}</td>
                           <td>{trade.stockTicker} </td>
                           <td>{trade.quantity}</td>
 
