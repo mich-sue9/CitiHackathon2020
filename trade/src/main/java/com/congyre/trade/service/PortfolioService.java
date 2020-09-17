@@ -8,6 +8,7 @@ import com.congyre.trade.entity.Trade.TradeStatus;
 import com.congyre.trade.repository.PortfolioRepository;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Optional;
@@ -16,6 +17,7 @@ import java.util.logging.Logger;
 
 import org.bson.types.ObjectId;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.mongodb.core.aggregation.ArrayOperators.ReverseArray;
 import org.springframework.http.HttpStatus;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
@@ -81,6 +83,7 @@ public class PortfolioService {
         return returnObj;
     }
 
+
     public Portfolio getportfolio(ObjectId id) {
         Optional<Portfolio> retrivePortfolio = repo.findById(id);// can be empty
         if (retrivePortfolio.isPresent()){
@@ -120,6 +123,8 @@ public class PortfolioService {
                     // trade not found error happens when the addTrade function is not working properly
                 }
             }
+            // want the result dispalyed from the latest to the oldest
+            Collections.reverse(historicalTrades);
             return historicalTrades;
 
         }else{
@@ -155,6 +160,8 @@ public class PortfolioService {
                     // trade not found error happens when the addTrade function is not working properly
                 }
             }
+            // want the result dispalyed from the latest to the oldest
+            Collections.reverse(pendingTrades);
             return pendingTrades;
         
         }else{
