@@ -8,6 +8,7 @@ import com.congyre.trade.entity.Trade.TradeStatus;
 import com.congyre.trade.repository.PortfolioRepository;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Optional;
@@ -16,6 +17,7 @@ import java.util.logging.Logger;
 
 import org.bson.types.ObjectId;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.mongodb.core.aggregation.ArrayOperators.ReverseArray;
 import org.springframework.http.HttpStatus;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
@@ -49,30 +51,38 @@ public class PortfolioService {
         for (String ticker : tickerStockMapping.keySet()){
             try{
                 HttpResponse<JsonNode> response = Unirest
-                .get( "https://www.alphavantage.co/query?function=TIME_SERIES_INTRADAY&symbol={tickerName}&interval=1min&outputSize=compact&apikey=1E0JKXX907FC1HEP")
+                //.get( "https://www.alphavantage.co/query?function=TIME_SERIES_INTRADAY&symbol={tickerName}&interval=1min&outputSize=compact&apikey=NQWYX4PJ8QFOUY9I")
+                .get( "https://pxqzjt6ami.execute-api.us-east-1.amazonaws.com/default/filePriceFeed?ticker={tickerName}&num_days=1")
                 .routeParam("tickerName", ticker)
                 .asJson();
                 JSONObject completeObj = response.getBody().getObject();
-                String lastRefreshed = completeObj.getJSONObject("Meta Data").getString("3. Last Refreshed");
-                String lastRefreshedPrice = completeObj.getJSONObject("Time Series (1min)").getJSONObject(lastRefreshed).getString("4. close");
+                log.log(Level.WARNING, completeObj.toString());
+                //String lastRefreshed = completeObj.getJSONObject("Meta Data").getString("3. Last Refreshed");
+                //String lastRefreshedPrice = completeObj.getJSONObject("Time Series (1min)").getJSONObject(lastRefreshed).getString("4. close");
+                JSONArray arrayPrice = completeObj.getJSONArray("price_data");
+                JSONArray prices = arrayPrice.getJSONArray(0);
+                Double stockPrice = prices.getDouble(1);
                 int quantity = tickerStockMapping.get(ticker).getAmount();
                 JSONObject tickerInfo = new JSONObject();
                 tickerInfo.put("ticker", ticker);
-                tickerInfo.put("price", lastRefreshedPrice);
+                tickerInfo.put("price", stockPrice);
                 tickerInfo.put("quantity", tickerStockMapping.get(ticker).getAmount());
-                totalValuation += quantity* Double.parseDouble(lastRefreshedPrice);
+                //totalValuation += quantity* Double.parseDouble(stockPrice);
+                totalValuation += quantity* stockPrice;
                 stockList.put(tickerInfo);
                 //returnObj.put(ticker, tickerInfo);
-                log.log(Level.WARNING, "Ticker: " + ticker + " price: " + lastRefreshedPrice);     
+                log.log(Level.WARNING, "Ticker: " + ticker + " price: " + stockPrice);     
                 }
             catch (Exception ex){
-                log.log(Level.WARNING, "Incorrect Ticker:" + ex.getMessage());
+                log.log(Level.WARNING, "Incorrect Ticker:" + ticker + ex.getMessage());
+
             }
         }
         returnObj.put("valuation", totalValuation);
         returnObj.put("stockPrice", stockList);
         return returnObj;
     }
+
 
     public Portfolio getportfolio(ObjectId id) {
         Optional<Portfolio> retrivePortfolio = repo.findById(id);// can be empty
@@ -113,6 +123,8 @@ public class PortfolioService {
                     // trade not found error happens when the addTrade function is not working properly
                 }
             }
+            // want the result dispalyed from the latest to the oldest
+            Collections.reverse(historicalTrades);
             return historicalTrades;
 
         }else{
@@ -148,6 +160,8 @@ public class PortfolioService {
                     // trade not found error happens when the addTrade function is not working properly
                 }
             }
+            // want the result dispalyed from the latest to the oldest
+            Collections.reverse(pendingTrades);
             return pendingTrades;
         
         }else{

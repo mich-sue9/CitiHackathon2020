@@ -18,9 +18,12 @@ export class Dashboard extends Component {
   };
   constructor(props){
     super(props)
+    //this.fetchPrices = this.fetchPrices.bind(this);
     this.state = {
       error: false,
-      portfolioId: "5f628e0a113d5610c2ccea84",
+
+      intervalId:"",
+      portfolioId: "5f623103c7e8ad1aca356733",
       liveData:[],
       valuation : "",
       portfolioData:"",
@@ -68,11 +71,27 @@ export class Dashboard extends Component {
       });
   }
 
-  componentDidMount(){
-    
 
+  fetchPrices = () => {
+    fetch('http://localhost:8080/'+'api/portfolios/getStockLivePrice/'+this.state.portfolioId, {
+      method: "GET"})
+        .then(res => res.json())
+        .then( data => {
+          var formatter = new Intl.NumberFormat('en-US', {
+            style: 'currency',
+            currency: 'USD',
+          });
+          this.setState({valuation: formatter.format(data.valuation),
+                          liveData: data.stockPrice});});
+  }
+ componentDidMount(){
     // Retrieve stock profile valuation & stock prices 
     console.log("Component mounted");
+    this.fetchPrices();
+    this.fetchPricesRefresher = setInterval(() => {
+        this.fetchPrices();
+    }, 5000)
+    
     //get portfoliodata
     this.loadPortfolio();
     this.loadLiveStockPrice();  
@@ -100,7 +119,6 @@ export class Dashboard extends Component {
       // These labels appear in the legend and in the tooltips when hovering different arcs
       labels: this.state.liveData.map(s => s.ticker)
     };
-    //create the pie chart
     return (
       <div>
         <div className="page-header">
