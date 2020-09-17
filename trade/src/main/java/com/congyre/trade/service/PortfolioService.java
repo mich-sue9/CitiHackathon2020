@@ -257,6 +257,9 @@ public class PortfolioService {
             if (stock.getAmount() < quantity){
                 log.log(Level.WARNING, "Insufficient stocks to remove");
                 throw new ResponseStatusException(HttpStatus.BAD_REQUEST);
+            } else if (stock.getAmount() == quantity){
+                portfolio_stocks.remove(ticker);
+                repo.save(portfolio);
             } else {
                 stock.setAmount(stock.getAmount() - quantity);
                 repo.save(portfolio);
