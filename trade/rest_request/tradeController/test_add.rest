@@ -1,4 +1,4 @@
-POST http://localhost:8080/api/trades/addTrade/5f623103c7e8ad1aca356733 HTTP/1.1
+POST http://localhost:8080/api/trades/addTrade/5f628e0a113d5610c2ccea84 HTTP/1.1
 content-type: application/json
 
 {

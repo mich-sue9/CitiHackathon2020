@@ -2,7 +2,7 @@ POST http://localhost:8080/api/portfolios/addPortfolio/5f5fa9ed4314e706a65b0a15 
 content-type: application/json
 
 {
-    "totalExpense": 0,
+    "totalExpense": 200,
     "cashOnHand":1000,
     "totalIncome":0
 }

@@ -20,8 +20,12 @@ import java.util.stream.Stream;
 import java.util.stream.StreamSupport;
 
 import com.congyre.trade.entity.Trade;
+import com.congyre.trade.repository.PortfolioRepository;
 import com.congyre.trade.repository.TradeRepository;
+import com.congyre.trade.repository.UserRepository;
+import com.congyre.trade.service.PortfolioService;
 import com.congyre.trade.service.TradeService;
+import com.congyre.trade.service.UserService;
 
 import org.bson.types.ObjectId;
 import org.junit.Test;
@@ -66,6 +70,32 @@ public class TradeServiceTests {
         public TradeService service() {
             return new TradeService();
         }
+
+        
+        @Bean
+        public UserService userService(){
+            UserService service = mock(UserService.class);
+            return service;
+        }
+
+        @Bean
+        public UserRepository userRepository(){
+            UserRepository repo = mock(UserRepository.class);
+            return repo;
+        }
+
+        @Bean
+        public PortfolioRepository portRepo(){
+            PortfolioRepository repo = mock(PortfolioRepository.class);
+            return repo;
+        }
+        @Bean
+        public PortfolioService portService(){
+            PortfolioService service = mock(PortfolioService.class);
+            System.out.println("setup PortService");
+            return service;
+        }
+
     }
 
     @Autowired
