@@ -49,22 +49,27 @@ public class PortfolioService {
         for (String ticker : tickerStockMapping.keySet()){
             try{
                 HttpResponse<JsonNode> response = Unirest
-                .get( "https://www.alphavantage.co/query?function=TIME_SERIES_INTRADAY&symbol={tickerName}&interval=1min&outputSize=compact&apikey=NQWYX4PJ8QFOUY9I")
+                //.get( "https://www.alphavantage.co/query?function=TIME_SERIES_INTRADAY&symbol={tickerName}&interval=1min&outputSize=compact&apikey=NQWYX4PJ8QFOUY9I")
+                .get( "https://pxqzjt6ami.execute-api.us-east-1.amazonaws.com/default/filePriceFeed?ticker={tickerName}&num_days=1")
                 .routeParam("tickerName", ticker)
                 .asJson();
                 JSONObject completeObj = response.getBody().getObject();
                 log.log(Level.WARNING, completeObj.toString());
-                String lastRefreshed = completeObj.getJSONObject("Meta Data").getString("3. Last Refreshed");
-                String lastRefreshedPrice = completeObj.getJSONObject("Time Series (1min)").getJSONObject(lastRefreshed).getString("4. close");
+                //String lastRefreshed = completeObj.getJSONObject("Meta Data").getString("3. Last Refreshed");
+                //String lastRefreshedPrice = completeObj.getJSONObject("Time Series (1min)").getJSONObject(lastRefreshed).getString("4. close");
+                JSONArray arrayPrice = completeObj.getJSONArray("price_data");
+                JSONArray prices = arrayPrice.getJSONArray(0);
+                Double stockPrice = prices.getDouble(1);
                 int quantity = tickerStockMapping.get(ticker).getAmount();
                 JSONObject tickerInfo = new JSONObject();
                 tickerInfo.put("ticker", ticker);
-                tickerInfo.put("price", lastRefreshedPrice);
+                tickerInfo.put("price", stockPrice);
                 tickerInfo.put("quantity", tickerStockMapping.get(ticker).getAmount());
-                totalValuation += quantity* Double.parseDouble(lastRefreshedPrice);
+                //totalValuation += quantity* Double.parseDouble(stockPrice);
+                totalValuation += quantity* stockPrice;
                 stockList.put(tickerInfo);
                 //returnObj.put(ticker, tickerInfo);
-                log.log(Level.WARNING, "Ticker: " + ticker + " price: " + lastRefreshedPrice);     
+                log.log(Level.WARNING, "Ticker: " + ticker + " price: " + stockPrice);     
                 }
             catch (Exception ex){
                 log.log(Level.WARNING, "Incorrect Ticker:" + ticker + ex.getMessage());

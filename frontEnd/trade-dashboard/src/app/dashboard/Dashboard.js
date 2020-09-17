@@ -117,7 +117,7 @@ export class Dashboard extends Component {
     this.fetchPrices();
     this.fetchPricesRefresher = setInterval(() => {
         this.fetchPrices();
-    }, 60000)
+    }, 5000)
     /****
     this.intervalId = setInterval(() => {
       fetch('http://localhost:8080/'+'api/portfolios/getStockLivePrice/'+this.state.portfolioId, {
