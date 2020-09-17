@@ -139,8 +139,7 @@ export class TradeForm extends Component {
                   </Form.Group>
 
                   <button type="submit" className="btn btn-gradient-primary mr-2" value="buy" onClick={e => this.handleOrderTrade(e.target.value)} >Buy</button>
-                  <button type="submit" className="btn btn-gradient-primary mr-2" value="sell" onClick={e => this.handleOrderTrade(e.target.value)} >Sell</button>
-                  <button className="btn btn-light">Cancel</button>
+                  <button type="submit" className="btn btn-gradient-secondary mr-2" value="sell" onClick={e => this.handleOrderTrade(e.target.value)} >Sell</button>
                 </form>
               </div>
             </div>
