@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { Form } from 'react-bootstrap';
-import { portId } from '../api/PortfolioAPI';
+import {portId} from '../api/PortfolioAPI';
 
 
 
@@ -47,10 +47,14 @@ export class TradeForm extends Component {
     this.setState({ requestPrice: e.target.value });
   };
 
-  handleOrderTrade() {
+  handleOrderTrade(value) {
     let trade = {};
     trade.stockTicker = this.state.ticker;
-    trade.quantity = this.state.quantity;
+    if (value == "buy"){
+      trade.quantity = this.state.quantity;
+    } else {
+      trade.quantity = -this.state.quantity;
+    }
     trade.requestPrice = this.state.requestPrice;
     trade.tStatus = this.state.tStatus;
     let response = fetch("http://localhost:8080/api/trades/addTrade/" + this.state.portfolioId, {
@@ -133,7 +137,8 @@ export class TradeForm extends Component {
                     <Form.Control type="text" className="form-control" id="exampleInputPassword1" placeholder="Request Price" onChange={this.requestPriceUpload} required />
                   </Form.Group>
 
-                  <button type="submit" className="btn btn-gradient-primary mr-2" onClick={this.handleOrderTrade} >Submit</button>
+                  <button type="submit" className="btn btn-gradient-primary mr-2" value="buy" onClick={e => this.handleOrderTrade(e.target.value)} >Buy</button>
+                  <button type="submit" className="btn btn-gradient-primary mr-2" value="sell" onClick={e => this.handleOrderTrade(e.target.value)} >Sell</button>
                   <button className="btn btn-light">Cancel</button>
                 </form>
               </div>
