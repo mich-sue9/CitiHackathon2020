@@ -317,15 +317,15 @@
           
           width: 50px;
           height:80px;
-          
+          display: block;
         }
         &.brand-logo-mini {
           display: inline-block;
         }
-        .logo{
-          height: 70px;
-          margin: auto;
-          vertical-align: middle;
+        .image {
+         
+          max-width: 100%;
+          height: auto;
         }
       }
     }
@@ -340,18 +340,20 @@
 @media (max-width:480px) {
   .navbar {
     .navbar-brand-wrapper {
+      display: block;
       width: 55px;
       .brand-logo-mini{
         padding-top: 0px;
         
       }
 
-      .logo{
-        height: 70px;
-        margin: auto;
-        vertical-align: middle;
+      .image {
+        
+        max-width: 100%;
+        height: 100%;
       }
     }
+    
   }
 }
 
