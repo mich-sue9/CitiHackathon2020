@@ -50,7 +50,7 @@ export class TradeForm extends Component {
   handleOrderTrade(value) {
     let trade = {};
     trade.stockTicker = this.state.ticker;
-    if (value == "buy"){
+    if (value === "buy"){
       trade.quantity = this.state.quantity;
     } else {
       trade.quantity = -this.state.quantity;
@@ -175,8 +175,6 @@ export class TradeForm extends Component {
 
                       )
                       }
-
-
                     </tbody>
                   </table>
                 </div>
