@@ -62,7 +62,6 @@ public class TradeServiceTests {
             TradeRepository repo = mock(TradeRepository.class);
             when(repo.findAll()).thenReturn(trades);
             when(repo.insert(any(Trade.class))).thenReturn(trade);
-           // when(repo.insert(null)).thenReturn(trade2);
             when(repo.save(trade2)).thenReturn(trade2);
             when(repo.findById(ID)).thenReturn(Optional.of(trade));
             when(repo.customFindByStockTicker(ticker)).thenReturn(List.of(trade));

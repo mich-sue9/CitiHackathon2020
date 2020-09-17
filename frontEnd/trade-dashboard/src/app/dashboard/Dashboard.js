@@ -98,7 +98,7 @@ export class Dashboard extends Component {
     }
 
   
-    const newTrafficData = {
+    const stockData = {
       datasets: [{
         data: this.state.liveData.map(s => s.quantity),
         backgroundColor: colorList
@@ -177,16 +177,7 @@ export class Dashboard extends Component {
             <div className="card">
               <div className="card-body">
                 <h4 className="card-title">Stocks In Portfolio</h4>
-                <Doughnut data={newTrafficData} />
-                <div id="traffic-chart-legend" className="rounded-legend legend-vertical legend-bottom-left pt-4">
-                    {this.state.liveData.map((stock)=> {
-                      return(
-                        <ul>
-                          <li> {stock.ticker} </li>
-                          <li> {stock.quantity} </li>
-                        </ul> );
-                      })} 
-                </div>
+                <Doughnut data={stockData} />
               </div>
             </div>
           </div>
