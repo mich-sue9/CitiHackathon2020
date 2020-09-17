@@ -1,7 +1,6 @@
 package com.congyre.trade.ServiceTest;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.test.context.ContextConfiguration;
@@ -34,7 +33,6 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 
 
-@SpringBootTest
 @RunWith(SpringRunner.class)
 @ContextConfiguration(classes=TradeServiceTests.Config.class)
 public class TradeServiceTests {

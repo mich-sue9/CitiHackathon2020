@@ -3,7 +3,6 @@ package com.congyre.trade.rest;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import java.util.HashMap;
 
 import com.congyre.trade.entity.Portfolio;
 import com.congyre.trade.entity.Trade;
@@ -11,7 +10,6 @@ import com.congyre.trade.service.PortfolioService;
 
 
 import org.bson.types.ObjectId;
-import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.CrossOrigin;
