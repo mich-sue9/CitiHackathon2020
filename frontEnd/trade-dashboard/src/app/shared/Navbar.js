@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import { Link } from 'react-router-dom';
 
 class Navbar extends Component {
   toggleOffcanvas() {
@@ -12,8 +11,8 @@ class Navbar extends Component {
     return (
       <nav className="navbar default-layout-navbar col-lg-12 col-12 p-0 fixed-top d-flex flex-row">
         <div className="text-center navbar-brand-wrapper d-flex align-items-center justify-content-center">
-          <Link className="navbar-brand brand-logo" ><img class="img-responsive" src={require('../../assets/images/citigrouplogo.jpg')} alt="logo"  /></Link>
-          <Link className="navbar-brand brand-logo-mini" ><img class="img-responsive" src={require('../../assets/images/citigrouplogo.jpg')} alt="logo" /></Link>
+          <div className="navbar-brand brand-logo" ><img src={require('../../assets/images/citigrouplogo.jpg')} alt="logo" /></div>
+          <div className="navbar-brand brand-logo-mini" ><img src={require('../../assets/images/citigrouplogo.jpg')} alt="logo" /></div>
         </div>
         <div className="navbar-menu-wrapper d-flex align-items-stretch">
           <button className="navbar-toggler navbar-toggler align-self-center" type="button" onClick={ () => document.body.classList.toggle('sidebar-icon-only') }>
