@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import {Bar, Doughnut} from 'react-chartjs-2';
-import {getPortfolio,getStockList} from '../api/PortfolioAPI';
+import {getPortfolio,getStockList, portId} from '../api/PortfolioAPI';
 import * as scale from "d3-scale";
 
 
@@ -23,7 +23,7 @@ export class Dashboard extends Component {
       error: false,
 
       intervalId:"",
-      portfolioId: "5f623103c7e8ad1aca356733",
+      portfolioId: portId,
       liveData:[],
       valuation : "",
       portfolioData:"",

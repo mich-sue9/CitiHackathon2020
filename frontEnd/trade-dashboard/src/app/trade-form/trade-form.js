@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { Form } from 'react-bootstrap';
+import {portId} from '../api/PortfolioAPI';
 import DatePicker from "react-datepicker";
 import bsCustomFileInput from 'bs-custom-file-input'
 
@@ -15,7 +16,7 @@ export class TradeForm extends Component {
       quantity: 0,
       requestPrice: 0,
       tStatus:"CREATED",
-      portfolioId: "5f6296c2200dd06478c0ede0",
+      portfolioId: portId,
       isLoaded: false,
 
       trades: []

@@ -1,12 +1,12 @@
 import React, { Component } from 'react'
 import { ProgressBar } from 'react-bootstrap';
-
+import {portId} from '../api/PortfolioAPI';
 export class BasicTable extends Component {
 
   constructor(props) {
     super(props);
     this.state = {
-      portfolioId: "5f6296c2200dd06478c0ede0",
+      portfolioId: portId,
       trades:[]
     };
   }
