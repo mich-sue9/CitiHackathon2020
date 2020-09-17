@@ -280,7 +280,11 @@ public class PortfolioService {
         return retrievePortfolio.get();
     }
 
-    
+    public void removeTradesFromOutstandingList(List<ObjectId> removeList, ObjectId portfolioId){
+        Portfolio p = getPortfolioRepo(portfolioId);
+        p.removeTradesFromOutstanding(removeList);
+        repo.save(p);
+    }
     @Scheduled(fixedRate=10000)
     public void scheduleUpdateOutstandingTrade() {
         log.info("start the interval call to update the outsanding trade for all the portfolios in dbs");
@@ -324,8 +328,8 @@ public class PortfolioService {
                 
             }
             
-            p.removeTradesFromOutstanding(outListtoRemove);
-            repo.save(p);
+            removeTradesFromOutstandingList(outListtoRemove,p.getId());
+           
         }
         log.info("end of scheduled job");
     }
