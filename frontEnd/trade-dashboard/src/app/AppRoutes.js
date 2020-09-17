@@ -5,9 +5,10 @@ import Spinner from '../app/shared/Spinner';
 
 const Dashboard = lazy(() => import('./dashboard/Dashboard'));
 
-const BasicElements = lazy(() => import('./trade-form/trade-form'));
+const TradeForm = lazy(() => import('./trade-form/trade-form'));
 
-const BasicTable = lazy(() => import('./tables/BasicTable'));
+const TradeHistory = lazy(() => import('./trade-form/tradehistory'));
+
 
 
 const Error404 = lazy(() => import('./error-pages/Error404'));
@@ -22,8 +23,9 @@ class AppRoutes extends Component {
       <Suspense fallback={<Spinner/>}>
         <Switch>
           <Route exact path="/dashboard" component={ Dashboard } />
-          <Route path="/trade-form/trade-form" component={ BasicElements } />
-          <Route path="/tables/basic-table" component={ BasicTable } />
+          <Route path="/trade-form/trade-form" component={ TradeForm } />
+
+          <Route path="/trade-form/tradehistory" component={ TradeHistory } />
           <Route path="/error-pages/error-404" component={ Error404 } />
           <Route path="/error-pages/error-500" component={ Error500 } />
           <Redirect to="/dashboard" />

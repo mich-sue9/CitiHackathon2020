@@ -311,7 +311,7 @@
   .navbar {
     flex-direction: row;
     .navbar-brand-wrapper {
-      width: 75px;
+      width: 50px;
       .navbar-brand {
         &.brand-logo {
           display: none;
@@ -332,7 +332,7 @@
 @media (max-width:480px) {
   .navbar {
     .navbar-brand-wrapper {
-      width: 55px;
+      width: 40px;
       .brand-logo-mini{
         padding-top: 0px;
       }

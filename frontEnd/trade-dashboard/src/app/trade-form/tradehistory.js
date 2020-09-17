@@ -1,6 +1,16 @@
 import React, { Component } from 'react'
-import { ProgressBar } from 'react-bootstrap';
 import {portId} from '../api/PortfolioAPI';
+
+
+
+
+const formatter = new Intl.NumberFormat('en-US', {
+  style: 'currency',
+  currency: 'USD',
+});
+
+
+
 export class BasicTable extends Component {
 
   constructor(props) {
@@ -76,14 +86,14 @@ export class BasicTable extends Component {
                     <tbody>
                     {this.state.trades.map((trade)=>  
                        <tr>
-                        <td>{trade.dateCreated} </td>
+                        <td>{trade.dateCreated.substring(0,10)} {trade.dateCreated.substring(11,19)}</td>
                         <td>{trade.stockTicker} </td>
                         <td>{trade.quantity}</td>
  
-                        <td>${trade.requestPrice}</td>
+                        <td>{formatter.format(trade.requestPrice)}</td>
                         
                         <td><label className="badge badge-info">{trade.tStatus}</label></td>
-                        <td>${trade.requestPrice*trade.quantity}</td>
+                        <td>{formatter.format(trade.requestPrice*trade.quantity)}</td>
                       </tr>
 
                     )
