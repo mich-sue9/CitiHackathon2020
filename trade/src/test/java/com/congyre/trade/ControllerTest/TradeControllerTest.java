@@ -6,9 +6,10 @@ import static org.hamcrest.Matchers.equalTo;
 
 import java.util.Date;
 import java.util.List;
+
 import java.util.stream.Stream;
 import java.util.stream.StreamSupport;
-
+import java.util.Optional;
 import com.congyre.trade.entity.Portfolio;
 import com.congyre.trade.entity.Trade;
 import com.congyre.trade.entity.Trade.TradeStatus;
@@ -72,13 +73,23 @@ public class TradeControllerTest {
     }
 
     @Test
-    public void TestGetAllTrades(){}
+    public void TestGetAllTrades(){
+        Iterable<Trade> trades = controller.getAllTrades();
+        Stream<Trade> stream = StreamSupport.stream(trades.spliterator(), false);
+        assertThat(stream.count(), equalTo(1L));
+    }
 
     @Test
-    public void TestGetTradeById(){}
+    public void TestGetTradeById(){
+        Optional<Trade> trade = controller.getTradeById(testID);
+        assertThat(trade.isPresent(), equalTo(true));
+    }
 
     @Test
-    public void TestGetTradesByTicker(){}
+    public void TestGetTradesByTicker(){
+        List<Trade> trades = controller.getTradesByTicker("AAPL");
+        assertThat(trades.size(), equalTo(1));
+    }
 
     @Test
     public void TestAddTrade(){
