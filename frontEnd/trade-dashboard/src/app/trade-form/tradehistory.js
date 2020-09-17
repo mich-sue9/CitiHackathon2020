@@ -24,6 +24,9 @@ export class BasicTable extends Component {
 
   componentDidMount() {
     this.loadTradeHistory();
+    this.TradeHistoryRefresher = setInterval(() => {
+      this.loadTradeHistory();
+    }, 5000)
     
   }
 

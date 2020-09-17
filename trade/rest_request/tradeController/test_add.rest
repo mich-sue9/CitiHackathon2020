@@ -1,12 +1,13 @@
 
-POST http://localhost:8080/api/trades/addTrade/5f63644b86ac153942fd1cc1 HTTP/1.1
+POST http://localhost:8080/api/trades/addTrade/5f637f50f8e8ed1ebd4ac8cf HTTP/1.1
 
 content-type: application/json
 
 {
-    "stockTicker": "TSLA",
+    "stockTicker": "AAPL",
     "quantity": 3,
     "requestPrice": 3132.58,
     "tStatus": "CREATED"
 }
+
 

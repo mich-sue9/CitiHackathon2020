@@ -311,13 +311,21 @@
   .navbar {
     flex-direction: row;
     .navbar-brand-wrapper {
-      width: 50px;
+      width: 55px;
       .navbar-brand {
         &.brand-logo {
-          display: none;
+          
+          width: 50px;
+          height:80px;
+          
         }
         &.brand-logo-mini {
           display: inline-block;
+        }
+        .logo{
+          height: 70px;
+          margin: auto;
+          vertical-align: middle;
         }
       }
     }
@@ -332,9 +340,16 @@
 @media (max-width:480px) {
   .navbar {
     .navbar-brand-wrapper {
-      width: 40px;
+      width: 55px;
       .brand-logo-mini{
         padding-top: 0px;
+        
+      }
+
+      .logo{
+        height: 70px;
+        margin: auto;
+        vertical-align: middle;
       }
     }
   }
