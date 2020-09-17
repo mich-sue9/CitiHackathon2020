@@ -1,5 +1,6 @@
 package com.congyre.trade.service;
 import com.congyre.trade.entity.Trade;
+import com.congyre.trade.entity.Trade.TradeStatus;
 import com.congyre.trade.repository.TradeRepository;
 
 import java.util.Collection;
@@ -49,8 +50,8 @@ public class TradeService {
     public void cancelTrade(ObjectId tradeId){
         Optional<Trade> retrievedTrade = this.getTradeById(tradeId);
         Trade newTrade = retrievedTrade.get();
-        String oldTicker = newTrade.getStockTicker();
-        newTrade.setStockTicker("CANCELLED");
+        TradeStatus oldTicker = newTrade.gettStatus();
+        newTrade.settStatus(TradeStatus.CANCELLED);
         repo.save(newTrade); 
         log.log(Level.INFO, "Trade status being updated from " + oldTicker + " to " + newTrade.getStockTicker());
     }

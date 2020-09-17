@@ -1,13 +1,24 @@
 package com.congyre.trade.ControllerTest;
 
-import java.util.Date;
+import static org.junit.Assert.assertEquals;
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.Matchers.equalTo;
 
+import java.util.Date;
+import java.util.List;
+import java.util.stream.Stream;
+import java.util.stream.StreamSupport;
+
+import com.congyre.trade.entity.Portfolio;
 import com.congyre.trade.entity.Trade;
 import com.congyre.trade.entity.Trade.TradeStatus;
+import com.congyre.trade.repository.PortfolioRepository;
 import com.congyre.trade.repository.TradeRepository;
 import com.congyre.trade.rest.TradeController;
+import com.congyre.trade.service.PortfolioService;
 import com.congyre.trade.service.TradeService;
 
+import org.bson.types.ObjectId;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -27,7 +38,8 @@ public class TradeControllerTest {
 
     @SpringBootApplication(scanBasePackageClasses = {
         TradeController.class,
-        TradeService.class
+        TradeService.class,
+        PortfolioService.class,
     })
     @EnableMongoRepositories(basePackages = "com.congyre.trade.repository")
     @PropertySource("file:src/test/resources/test.properties")
@@ -40,7 +52,11 @@ public class TradeControllerTest {
     @Autowired 
     private TradeRepository repo;
 
+    @Autowired
+    private PortfolioRepository portRepo;
+
     public String testID;
+
 
     @Before
     public void setUp(){
@@ -65,17 +81,37 @@ public class TradeControllerTest {
     public void TestGetTradesByTicker(){}
 
     @Test
-    public void TestAddTrade(){}
+    public void TestAddTrade(){
+        //setup portfolio
+        String portId = "5f5ecf766bf9793a7412d8f1";
+        Portfolio testPort = new Portfolio();
+        testPort.setId(new ObjectId(portId));
+
+        //add portfolio into the repo
+        portRepo.save(testPort);
+
+        //test
+        controller.addTrade(new Trade(), portId);
+        Iterable<Trade> trades= repo.findAll();
+        Stream<Trade> stream = StreamSupport.stream(trades.spliterator(), false);
+        assertThat(stream.count(), equalTo(2L));
+    }
+
 
     @Test
-    public void TestDeleteTradeById(){}
-    
-    @Test
-    public void TestCancelTrade(){}
-    
-    @Test
-    public void TestCheckTradeIdExists(){
+    public void TestDeleteTradeById(){
+        controller.deleteTradeById(testID);
+        Iterable<Trade> trades= repo.findAll();
+        Stream<Trade> stream = StreamSupport.stream(trades.spliterator(), false);
+        assertThat(stream.count(), equalTo(0L));
 
     }
     
+    @Test
+    public void TestCancelTrade(){
+        controller.cancelTrade(testID);
+        Trade test= repo.findById(new ObjectId(testID)).orElse(null);
+        assertEquals(test.gettStatus(),TradeStatus.CANCELLED);
+    }
+
 }
