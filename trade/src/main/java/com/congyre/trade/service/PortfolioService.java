@@ -143,7 +143,7 @@ public class PortfolioService {
             Portfolio portfolio = retrivePortfolio.get();
 
             // get historical trades
-            List<ObjectId> pendingIds = portfolio.getHistory();
+            List<ObjectId> pendingIds = portfolio.getOutstandingList();
             List<Trade> pendingTrades = new ArrayList<Trade>();
 
             for (ObjectId tradeId : pendingIds){
