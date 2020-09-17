@@ -118,7 +118,7 @@ export class TradeForm extends Component {
           </nav>
         </div>
         <div className="row">
-          <div className="col-12 grid-margin stretch-card">
+          <div className="col-4 grid-margin stretch-card">
             <div className="card">
               <div className="card-body">
                 <h4 className="card-title">Trade request</h4>
@@ -143,9 +143,7 @@ export class TradeForm extends Component {
               </div>
             </div>
           </div>
-        </div>
-        <div className="row">
-          <div className="col-lg-12 grid-margin stretch-card">
+          <div className="col-lg-8 grid-margin stretch-card">
             <div className="card">
               <div className="card-body">
                 <h4 className="card-title">Pending Trades</h4>
