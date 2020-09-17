@@ -29,5 +29,11 @@ public class PortfolioControllerTest {
     
     @Test
     public void donothing(){}
+
+
+    @Test
+    public void TestCheckTradeIdExists(){
+
+    }
     
 }
