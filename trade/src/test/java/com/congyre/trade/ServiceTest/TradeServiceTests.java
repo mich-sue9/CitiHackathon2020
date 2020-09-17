@@ -8,6 +8,7 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 import static org.hamcrest.MatcherAssert.assertThat;
@@ -41,6 +42,7 @@ public class TradeServiceTests {
     private static ObjectId ID = new ObjectId("5f46a3d545bee629d17fd7b2");
     private static Trade trade2;
     private static String ticker = "AAPL";
+    private static Trade trade = new Trade();
 
 
     @Configuration
@@ -51,7 +53,7 @@ public class TradeServiceTests {
 
            
             List<Trade> trades = new ArrayList<>();
-            Trade trade = new Trade();
+            
             trade.setId(ID);
             trade.setStockTicker(ticker);
             trades.add(trade);
@@ -59,7 +61,8 @@ public class TradeServiceTests {
             // setup the mock
             TradeRepository repo = mock(TradeRepository.class);
             when(repo.findAll()).thenReturn(trades);
-            when(repo.insert(any(Trade.class))).thenReturn(trade2);
+            when(repo.insert(any(Trade.class))).thenReturn(trade);
+           // when(repo.insert(null)).thenReturn(trade2);
             when(repo.save(trade2)).thenReturn(trade2);
             when(repo.findById(ID)).thenReturn(Optional.of(trade));
             when(repo.customFindByStockTicker(ticker)).thenReturn(List.of(trade));
@@ -92,6 +95,7 @@ public class TradeServiceTests {
         @Bean
         public PortfolioService portService(){
             PortfolioService service = mock(PortfolioService.class);
+            doNothing().when(service).addTrade(any(ObjectId.class), any(ObjectId.class));
             System.out.println("setup PortService");
             return service;
         }
@@ -111,7 +115,7 @@ public class TradeServiceTests {
     @Test
     public void testAddTrade(){
         Trade savedTrade=service.addTrade(new Trade(),ID);
-        assertThat(savedTrade, equalTo(trade2));
+        assertThat(savedTrade, equalTo(trade));
 
     }
     
