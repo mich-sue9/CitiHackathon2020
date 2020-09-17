@@ -1,8 +1,6 @@
 import React, { Component } from 'react';
 import { Form } from 'react-bootstrap';
 import {portId} from '../api/PortfolioAPI';
-import DatePicker from "react-datepicker";
-import bsCustomFileInput from 'bs-custom-file-input'
 
 
 
