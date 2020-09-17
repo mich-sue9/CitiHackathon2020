@@ -80,11 +80,6 @@ public class TradeControllerTest {
         List<Trade> trades = controller.getTradesByTicker("AAPL");
         assertThat(trades.size(), equalTo(1));
     }
-    /***
-     * @RequestMapping(method = RequestMethod.GET, value = "/ticker/{tickerName}")
-	public List<Trade> getTradesByTicker(@PathVariable("tickerName") String tickerName) {
-        return service.getTradesByTicker(tickerName);
-     */
 
     @Test
     public void TestAddTrade(){}
