@@ -28,6 +28,26 @@ public class TradeControllerTest {
     public static class Config{}
     
     @Test
-    public void donothing(){}
+    public void TestGetAllTrades(){}
+
+    @Test
+    public void TestGetTradeById(){}
+
+    @Test
+    public void TestGetTradesByTicker(){}
+
+    @Test
+    public void TestAddTrade(){}
+
+    @Test
+    public void TestDeleteTradeById(){}
+    
+    @Test
+    public void TestCancelTrade(){}
+    
+    @Test
+    public void TestCheckTradeIdExists(){
+
+    }
     
 }
