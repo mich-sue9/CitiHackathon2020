@@ -72,29 +72,16 @@ export class Dashboard extends Component {
   }
 
 
-  fetchPrices = () => {
-    fetch('http://localhost:8080/'+'api/portfolios/getStockLivePrice/'+this.state.portfolioId, {
-      method: "GET"})
-        .then(res => res.json())
-        .then( data => {
-          var formatter = new Intl.NumberFormat('en-US', {
-            style: 'currency',
-            currency: 'USD',
-          });
-          this.setState({valuation: formatter.format(data.valuation),
-                          liveData: data.stockPrice});});
-  }
  componentDidMount(){
     // Retrieve stock profile valuation & stock prices 
     console.log("Component mounted");
-    this.fetchPrices();
+    this.loadLiveStockPrice();
+    this.loadPortfolio();
     this.fetchPricesRefresher = setInterval(() => {
-        this.fetchPrices();
+        this.loadLiveStockPrice();
+        this.loadPortfolio();
     }, 5000)
     
-    //get portfoliodata
-    this.loadPortfolio();
-    this.loadLiveStockPrice();  
   }
 
 
