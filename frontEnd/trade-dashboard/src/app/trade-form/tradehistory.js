@@ -76,7 +76,7 @@ export class BasicTable extends Component {
                     <tbody>
                     {this.state.trades.map((trade)=>  
                        <tr>
-                        <td>{trade.dateCreated} </td>
+                        <td>{trade.dateCreated.substring(0,10)} {trade.dateCreated.substring(11,19)}</td>
                         <td>{trade.stockTicker} </td>
                         <td>{trade.quantity}</td>
  
