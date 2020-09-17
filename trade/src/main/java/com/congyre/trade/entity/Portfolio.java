@@ -47,8 +47,8 @@ public class Portfolio {
         return outstandingList;
     }
 
-    public void removeTradeIdFromOutstanding(ObjectId tradeId){
-        this.outstandingList.remove(tradeId);
+    public void removeTradesFromOutstanding(List<ObjectId> removeList){
+        this.outstandingList.removeAll(removeList);
     }
 
     public void addTradeIdToOutstanding(ObjectId tradeId){

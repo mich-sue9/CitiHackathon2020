@@ -13,7 +13,7 @@ export class TradeForm extends Component {
       ticker: "",
       quantity: 0,
       requestPrice: 0,
-      tStatus:"CREATED",
+      tStatus: "CREATED",
       portfolioId: portId,
       isLoaded: false,
 
@@ -47,13 +47,17 @@ export class TradeForm extends Component {
     this.setState({ requestPrice: e.target.value });
   };
 
-  handleOrderTrade() {
+  handleOrderTrade(value) {
     let trade = {};
     trade.stockTicker = this.state.ticker;
-    trade.quantity = this.state.quantity;
+    if (value == "buy"){
+      trade.quantity = this.state.quantity;
+    } else {
+      trade.quantity = -this.state.quantity;
+    }
     trade.requestPrice = this.state.requestPrice;
     trade.tStatus = this.state.tStatus;
-    let response = fetch('http://localhost:8080/' + "api/trades/addTrade/" + this.state.portfolioId, {
+    let response = fetch("http://localhost:8080/api/trades/addTrade/" + this.state.portfolioId, {
       method: "POST",
       headers: {
         'Content-Type': 'application/json;charset=utf-8'
@@ -87,16 +91,15 @@ export class TradeForm extends Component {
   }
 
 
-  
   componentDidMount() {
     //bsCustomFileInput.init()
     this.loadPendingTrades();
     this.pendingTradeRefresher = setInterval(() => {
       this.loadPendingTrades();
-    },5000)
+    }, 5000)
   }
 
-  componentWillUnmount(){
+  componentWillUnmount() {
     clearInterval(this.pendingTradeRefresher)
   }
 
@@ -134,8 +137,8 @@ export class TradeForm extends Component {
                     <Form.Control type="text" className="form-control" id="exampleInputPassword1" placeholder="Request Price" onChange={this.requestPriceUpload} required />
                   </Form.Group>
 
-                  <button type="submit" className="btn btn-gradient-primary mr-2" onClick={this.handleOrderTrade} >Submit</button>
-                  <button className="btn btn-light">Cancel</button>
+                  <button type="submit" className="btn btn-gradient-primary mr-2" value="buy" onClick={e => this.handleOrderTrade(e.target.value)} >Buy</button>
+                  <button type="submit" className="btn btn-gradient-secondary mr-2" value="sell" onClick={e => this.handleOrderTrade(e.target.value)} >Sell</button>
                 </form>
               </div>
             </div>
@@ -162,7 +165,7 @@ export class TradeForm extends Component {
                     <tbody>
                       {this.state.trades.map((trade) =>
                         <tr>
-                          <td>{trade.dateCreated} </td>
+                          <td>{trade.dateCreated.substring(0,10)} {trade.dateCreated.substring(11,19)}</td>
                           <td>{trade.stockTicker} </td>
                           <td>{trade.quantity}</td>
 

@@ -257,6 +257,9 @@ public class PortfolioService {
             if (stock.getAmount() < quantity){
                 log.log(Level.WARNING, "Insufficient stocks to remove");
                 throw new ResponseStatusException(HttpStatus.BAD_REQUEST);
+            } else if (stock.getAmount() == quantity){
+                portfolio_stocks.remove(ticker);
+                repo.save(portfolio);
             } else {
                 stock.setAmount(stock.getAmount() - quantity);
                 repo.save(portfolio);
@@ -277,7 +280,11 @@ public class PortfolioService {
         return retrievePortfolio.get();
     }
 
-    
+    public void removeTradesFromOutstandingList(List<ObjectId> removeList, ObjectId portfolioId){
+        Portfolio p = getPortfolioRepo(portfolioId);
+        p.removeTradesFromOutstanding(removeList);
+        repo.save(p);
+    }
     @Scheduled(fixedRate=10000)
     public void scheduleUpdateOutstandingTrade() {
         log.info("start the interval call to update the outsanding trade for all the portfolios in dbs");
@@ -286,20 +293,21 @@ public class PortfolioService {
         double expense;
         //update the outstandinList for each portfolio we have
         for(Portfolio p: portList){
+            //create a local varible to hold the list 
+            List <ObjectId> outListtoRemove = new ArrayList<>();
             for(ObjectId id:p.getOutstandingList()){
                 //check the status of outstanding list              
                 curTrade = tradeService.getTradeById(id).orElse(null);
 
                 //check if the outstanding is rejected, if yes remove from outstanding list
                 if(curTrade != null & curTrade.gettStatus()==TradeStatus.REJECTED){
-                    p.removeTradeIdFromOutstanding(id);
-                    repo.save(p);
+                    outListtoRemove.add(id);
                 }
                    
                 //if current trade is not null and the current trade has been fulfilled
                 else if(curTrade != null & curTrade.gettStatus()==TradeStatus.FILLED){
                     //remove the trade from the outStandinglist
-                    p.removeTradeIdFromOutstanding(id);
+                    outListtoRemove.add(id);
                     
                     //set the money change
                     expense = curTrade.getQuantity()*curTrade.getRequestPrice();
@@ -319,6 +327,9 @@ public class PortfolioService {
 
                 
             }
+            
+            removeTradesFromOutstandingList(outListtoRemove,p.getId());
+           
         }
         log.info("end of scheduled job");
     }
