@@ -1,20 +1,13 @@
 package com.congyre.trade.ControllerTest;
 
-import static org.junit.Assert.assertEquals;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.equalTo;
 
-import java.util.Date;
-import java.util.List;
 
-import java.util.stream.Stream;
-import java.util.stream.StreamSupport;
-import java.util.Optional;
+import java.util.HashMap;
 import com.congyre.trade.entity.Portfolio;
-import com.congyre.trade.entity.Trade;
-import com.congyre.trade.entity.Trade.TradeStatus;
+import com.congyre.trade.entity.Stock;
 import com.congyre.trade.repository.PortfolioRepository;
-import com.congyre.trade.repository.TradeRepository;
 import com.congyre.trade.rest.PortfolioController;
 import com.congyre.trade.rest.TradeController;
 import com.congyre.trade.service.PortfolioService;
@@ -34,96 +27,91 @@ import org.springframework.test.context.junit4.SpringRunner;
 
 @SpringBootTest
 @RunWith(SpringRunner.class)
-@ContextConfiguration(classes= PortfolioStocksControllerTest.Config.class)
+@ContextConfiguration(classes = PortfolioStocksControllerTest.Config.class)
 
 public class PortfolioStocksControllerTest {
 
-    @SpringBootApplication(scanBasePackageClasses = {
-        TradeController.class,
-        TradeService.class,
-        PortfolioService.class,
-    })
+    @SpringBootApplication(scanBasePackageClasses = { TradeController.class, TradeService.class,
+            PortfolioService.class, })
     @EnableMongoRepositories(basePackages = "com.congyre.trade.repository")
     @PropertySource("file:src/test/resources/test.properties")
 
-    public static class Config{}
-    
-    @Autowired 
-    private PortfolioController controller;
-
-    @Autowired 
-    private PortfolioRepository repo;
+    public static class Config {
+    }
 
     @Autowired
-    private PortfolioRepository portRepo;
+    private PortfolioController controller;
 
-    public ObjectId testID = new ObjectId("5f46a3d545bee629d17fd7b2");
+    @Autowired
+    private PortfolioService service;
+
+    @Autowired
+    private PortfolioRepository repo;
+
+    public String portId;
+
+    private String userId;
+
+    private HashMap<String, Stock> stocks;
+
+    private Portfolio testPort;
 
 
     @Before
     public void setUp(){
+        // clean the test db
         repo.deleteAll();
-        Trade trade = new Trade();
-        trade.setDateCreated(new Date());
-        trade.setStockTicker("AAPL");
-        trade.setQuantity(20);
-        trade.setRequestPrice(20.20);
-        trade.settStatus(TradeStatus.CREATED);
 
-        testID = ;
-    }
-
-    @Test
-    public void TestGetAllTrades(){
-        Iterable<Trade> trades = controller.getAllTrades();
-        Stream<Trade> stream = StreamSupport.stream(trades.spliterator(), false);
-        assertThat(stream.count(), equalTo(1L));
-    }
-
-    @Test
-    public void TestGetTradeById(){
-        Optional<Trade> trade = controller.getTradeById(testID);
-        assertThat(trade.isPresent(), equalTo(true));
-    }
-
-    @Test
-    public void TestGetTradesByTicker(){
-        List<Trade> trades = controller.getTradesByTicker("AAPL");
-        assertThat(trades.size(), equalTo(1));
-    }
-
-    @Test
-    public void TestAddTrade(){
-        //setup portfolio
-        String portId = "5f5ecf766bf9793a7412d8f1";
-        Portfolio testPort = new Portfolio();
+        //setup a empty portfolio
+        portId = "5f46a3d545bee629d17fd7b2";
+        testPort = new Portfolio();
         testPort.setId(new ObjectId(portId));
-
-        //add portfolio into the repo
-        portRepo.save(testPort);
-
-        //test
-        controller.addTrade(new Trade(), portId);
-        Iterable<Trade> trades= repo.findAll();
-        Stream<Trade> stream = StreamSupport.stream(trades.spliterator(), false);
-        assertThat(stream.count(), equalTo(2L));
     }
 
 
     @Test
-    public void TestDeleteTradeById(){
-        controller.deleteTradeById(testID);
-        Iterable<Trade> trades= repo.findAll();
-        Stream<Trade> stream = StreamSupport.stream(trades.spliterator(), false);
-        assertThat(stream.count(), equalTo(0L));
+    public void testAddPortfolio(){
+        //add empty portfolio to a user
+        userId = "2346a3d545bee629d17fd7b2";
+        controller.addPortfolio(userId, testPort);
+        
+        //test 
+        Portfolio getPortfolio = service.getportfolio(new ObjectId(portId));
+        assertThat(getPortfolio.getId(), equalTo(new ObjectId(portId)));
+    }
+
+
+    @Test
+    public void testAddStock(){
+        //add empty portfolio to a user
+        userId = "2346a3d545bee629d17fd7b2";
+        controller.addPortfolio(userId, testPort);
+
+        //add stock
+        controller.addStock("AAPL", portId, 23);
+
+        //test a stock is added into portfoio inventory
+        stocks = service.getStocks(new ObjectId(portId));
+        assertThat(stocks.size(), equalTo(1));
 
     }
-    
+
     @Test
-    public void TestCancelTrade(){
-        controller.cancelTrade(testID);
-        Trade test= repo.findById(new ObjectId(testID)).orElse(null);
-        assertEquals(test.gettStatus(),TradeStatus.CANCELLED);
+    public void testAddRemoveStock(){
+        //add empty portfolio to a user
+        userId = "2346a3d545bee629d17fd7b2";
+        controller.addPortfolio(userId, testPort);
+
+        // add then remove stock
+        controller.addStock("AAPL", portId, 23);
+        controller.removeStock("AAPL", portId, 10);
+        controller.removeStock("AAPL", portId, 13);
+
+        //test a correct amount of stocks are removed
+        stocks = service.getStocks(new ObjectId(portId));
+        assertThat(stocks.size(), equalTo(0));
     }
+
+
 
 }
