@@ -29,7 +29,7 @@ public class PortfolioController {
     private PortfolioService service;
 
     /**
-     * Used to get table of stocks and their current prices
+     * Used to get table of stocks and their current prices.
      * 
      * @param portId string representation of the ObjectId of the portfolio
      * @return stringified JSON about stock informations in this portfolio -
@@ -47,7 +47,7 @@ public class PortfolioController {
     }
 
     /**
-     * get the portfolio object with the given id
+     * Get the portfolio object with the given id.
      * 
      * @param id string representation of the ObjectId of the portfolio
      * @return portfolio object
@@ -67,7 +67,7 @@ public class PortfolioController {
     }
 
     /**
-     * Get the list of Trade object, which were created under this portfolio
+     * Get the list of Trade object, which were created under this portfolio.
      * 
      * @param id string representation of the ObjectId of the portfolio
      * @return List<Trade> historical trades
@@ -89,7 +89,7 @@ public class PortfolioController {
 
     /**
      * Get the list of Trade object, which were in pending status under this
-     * portfolio pending status: CREATED or PROCESSING
+     * portfolio, pending status: CREATED or PROCESSING.
      * 
      * @param id string representation of the ObjectId of the portfolio
      * @return List<Trade> pending trades
@@ -110,7 +110,7 @@ public class PortfolioController {
     }
 
     /**
-     * add given amount about stocks into a portfolio
+     * Add given amount about stocks into a portfolio.
      * 
      * @param ticker      ticker for the stock
      * @param portfolioId string representation of the ObjectId of the portfolio
@@ -124,7 +124,7 @@ public class PortfolioController {
     }
 
     /**
-     * remove given amount about stocks from a portfolio
+     * Remove given amount about stocks from a portfolio.
      * 
      * @param ticker      ticker for the stock
      * @param portfolioId string representation of the ObjectId of the portfolio
@@ -138,7 +138,7 @@ public class PortfolioController {
     }
 
     /**
-     * add a portfolio to a user with a given userId
+     * Add a portfolio to a user with a given userId.
      * 
      * @param userId string representation of the ObjectId of a user
      * @param port   a Portfolio object
