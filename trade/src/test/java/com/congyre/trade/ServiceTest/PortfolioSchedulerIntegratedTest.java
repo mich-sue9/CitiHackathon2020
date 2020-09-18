@@ -73,6 +73,7 @@ public class PortfolioSchedulerIntegratedTest {
         // and these stocks should be removed by scheduler
         ObjectId tradeId1 = new ObjectId("1a46a3d545bee629d17fd7b2");
         ObjectId tradeId2 = new ObjectId("2b46a3d545bee629d17fd7b2");
+        ObjectId tradeId3 = new ObjectId("3c46a3d545bee629d17fd7b2");
 
         Trade trade1 = new Trade();
         trade1.settStatus(TradeStatus.FILLED);
@@ -88,8 +89,16 @@ public class PortfolioSchedulerIntegratedTest {
         trade2.setQuantity(3);
         trade2.setRequestPrice(123.45);
 
+        Trade trade3 = new Trade();
+        trade3.settStatus(TradeStatus.CREATED);
+        trade3.setId(tradeId3);
+        trade3.setStockTicker("AAPL");
+        trade3.setQuantity(3);
+        trade3.setRequestPrice(3289.45);
+
         tradeService.addTrade(trade1, PORD_ID);
         tradeService.addTrade(trade2, PORD_ID);
+        tradeService.addTrade(trade3, PORD_ID);
 
     }
 
@@ -101,7 +110,7 @@ public class PortfolioSchedulerIntegratedTest {
             e.printStackTrace();
         }
         
-        assertThat(service.getPendingTrades(PORD_ID).isEmpty(), equalTo(true));
+        assertThat(service.getPendingTrades(PORD_ID).size(), equalTo(1));
 
 
     }
