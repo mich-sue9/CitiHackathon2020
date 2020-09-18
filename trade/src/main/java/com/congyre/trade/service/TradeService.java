@@ -28,10 +28,13 @@ public class TradeService {
         return repo.findAll();
     }
 
-    /** Submits a request to trade. 
-    ***  A new trade will be submitted to the Trade repository.
-    ***  A new trade entry will also be added to Portfolio's history & outstanding list.
-    */
+    /***
+     * Submits a request to trade
+     * A new trade will be submitted to the Trade repo and added to a portfolio's history & outstanding list 
+     * @param trade The new trade that was created
+     * @param porfolioId The id of the portfolio that the trade was created for 
+     * @return Trade that was added 
+     */
     public Trade addTrade (Trade trade, ObjectId porfolioId){
         trade.setDateCreated(new Date());
         Trade newTrade = repo.insert(trade);
@@ -39,14 +42,27 @@ public class TradeService {
         return newTrade;
     }
 
+    /***
+     *  Delete a trade from the trade repository
+     * @param id used to identify which trade to delete
+     */
     public void deleteTradeById(ObjectId id){
         repo.deleteById(id);
     }
 
+    /***
+     * Retrieves the trade with a given id
+     * @param id used to identify which trade to retrieve
+     * @return
+     */
     public Optional<Trade> getTradeById(ObjectId id){
         return repo.findById(id);
     }
 
+    /***
+     * Changes a trade's status to cancelled
+     * @param tradeId id of trade to cancel
+     */
     public void cancelTrade(ObjectId tradeId){
         Optional<Trade> retrievedTrade = this.getTradeById(tradeId);
         Trade newTrade = retrievedTrade.get();
@@ -56,6 +72,12 @@ public class TradeService {
         log.log(Level.INFO, "Trade status being updated from " + oldTicker + " to " + newTrade.getStockTicker());
     }
 
+
+    /**
+     * Retrieve all trades related to a certain ticker
+     * @param tickerName name of ticker to retrieve list of 
+     * @return
+     */
     public List<Trade> getTradesByTicker(String tickerName){
         return repo.customFindByStockTicker(tickerName);
     }
