@@ -64,6 +64,7 @@ public class PortfolioStocksControllerTest {
 
         //setup a empty portfolio
         portId = "5f46a3d545bee629d17fd7b2";
+        userId = "2346a3d545bee629d17fd7b2";
         testPort = new Portfolio();
         testPort.setId(new ObjectId(portId));
     }
@@ -72,7 +73,6 @@ public class PortfolioStocksControllerTest {
     @Test
     public void testAddPortfolio(){
         //add empty portfolio to a user
-        userId = "2346a3d545bee629d17fd7b2";
         controller.addPortfolio(userId, testPort);
         
         //test 
@@ -84,7 +84,6 @@ public class PortfolioStocksControllerTest {
     @Test
     public void testAddStock(){
         //add empty portfolio to a user
-        userId = "2346a3d545bee629d17fd7b2";
         controller.addPortfolio(userId, testPort);
 
         //add stock
@@ -99,7 +98,6 @@ public class PortfolioStocksControllerTest {
     @Test
     public void testAddRemoveStock(){
         //add empty portfolio to a user
-        userId = "2346a3d545bee629d17fd7b2";
         controller.addPortfolio(userId, testPort);
 
         // add then remove stock
