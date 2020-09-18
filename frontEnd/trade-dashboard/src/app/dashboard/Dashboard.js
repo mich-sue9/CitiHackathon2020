@@ -18,7 +18,6 @@ export class Dashboard extends Component {
   };
   constructor(props){
     super(props)
-    //this.fetchPrices = this.fetchPrices.bind(this);
     this.state = {
       error: false,
 
