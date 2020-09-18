@@ -41,7 +41,11 @@ public class PortfolioService {
     @Autowired
     private UserService userService;
 
-
+    /***
+     * Retrieve live prices for the tickers in portfolio with portId.
+     * @param portId Portfolio id to retrieve live prices for
+     * @return JSONObject Contains stock ticker, their price, and their quantity.
+     */
     public JSONObject getTickerPrices(ObjectId portId){
         HashMap<String, Stock> tickerStockMapping = getStocks(portId);
         JSONObject returnObj = new JSONObject();
@@ -50,14 +54,11 @@ public class PortfolioService {
         for (String ticker : tickerStockMapping.keySet()){
             try{
                 HttpResponse<JsonNode> response = Unirest
-                //.get( "https://www.alphavantage.co/query?function=TIME_SERIES_INTRADAY&symbol={tickerName}&interval=1min&outputSize=compact&apikey=NQWYX4PJ8QFOUY9I")
                 .get( "https://pxqzjt6ami.execute-api.us-east-1.amazonaws.com/default/filePriceFeed?ticker={tickerName}&num_days=1")
                 .routeParam("tickerName", ticker)
                 .asJson();
                 JSONObject completeObj = response.getBody().getObject();
-                log.log(Level.WARNING, completeObj.toString());
-                //String lastRefreshed = completeObj.getJSONObject("Meta Data").getString("3. Last Refreshed");
-                //String lastRefreshedPrice = completeObj.getJSONObject("Time Series (1min)").getJSONObject(lastRefreshed).getString("4. close");
+                log.log(Level.INFO, completeObj.toString());
                 JSONArray arrayPrice = completeObj.getJSONArray("price_data");
                 JSONArray prices = arrayPrice.getJSONArray(0);
                 Double stockPrice = prices.getDouble(1);
@@ -66,14 +67,12 @@ public class PortfolioService {
                 tickerInfo.put("ticker", ticker);
                 tickerInfo.put("price", stockPrice);
                 tickerInfo.put("quantity", tickerStockMapping.get(ticker).getAmount());
-                //totalValuation += quantity* Double.parseDouble(stockPrice);
                 totalValuation += quantity* stockPrice;
                 stockList.put(tickerInfo);
-                //returnObj.put(ticker, tickerInfo);
-                log.log(Level.WARNING, "Ticker: " + ticker + " price: " + stockPrice);     
+                log.log(Level.INFO, "Ticker: " + ticker + " price: " + stockPrice);     
                 }
             catch (Exception ex){
-                log.log(Level.WARNING, "Incorrect Ticker:" + ticker + ex.getMessage());
+                log.log(Level.WARNING, "Ticker is not covered by the Live API:" + ticker );
 
             }
         }
@@ -83,8 +82,13 @@ public class PortfolioService {
     }
 
 
+    /***
+     * Retrieves portfolio with id from the repository
+     * @param id Portfolio id to retrieve
+     * @return Portfolio object with that id if it exists.
+     */
     public Portfolio getportfolio(ObjectId id) {
-        Optional<Portfolio> retrivePortfolio = repo.findById(id);// can be empty
+        Optional<Portfolio> retrivePortfolio = repo.findById(id); // can be empty
         if (retrivePortfolio.isPresent()){
             log.log(Level.INFO, "Portfolio retrieved with id: " + id);
             return retrivePortfolio.get();
@@ -94,7 +98,11 @@ public class PortfolioService {
         }
     }
 
-    
+    /***
+     *  Retrieve all trades made by this portfolio id
+     * @param id Portfolio id to retrieve trade history of 
+     * @return List<Trade> containing all Trades made by this portfolio
+     */
     public List<Trade> getTradeHistory(ObjectId id){
         Optional<Portfolio> retrivePortfolio = repo.findById(id);// can be empty
         if (retrivePortfolio.isPresent()){
@@ -132,6 +140,11 @@ public class PortfolioService {
     }
 
 
+    /***
+     *  Retrieve all Trades that are currently still awaiting processing by the dummy trade fufiller. 
+     * @param id Portfolio id to retrieve pending trades for
+     * @return List<Trade> contains Trades are are still not processed yet.
+     */
     public List<Trade> getPendingTrades(ObjectId id){
         Optional<Portfolio> retrivePortfolio = repo.findById(id);
         if (retrivePortfolio.isPresent()){
@@ -168,7 +181,11 @@ public class PortfolioService {
         }
     }
 
-    /*** Used for getting  live stock  data */
+    /***
+     * Retrieve ticker and its associated Stock object from a portfolio
+     * @param portId Portfolio ID to get information from 
+     * @return HashMap<String, Stock> Mapping of the ticker name to its Stock object
+     */
     public HashMap<String, Stock> getStocks(ObjectId portId){
         try{
             Portfolio portfolio = getPortfolioRepo(portId);
@@ -181,15 +198,20 @@ public class PortfolioService {
         }
     }
 
-    public void addPortfolio(ObjectId userId,Portfolio port){
+    /***
+     * Add a portfolio object into the repository and set the user it belongs to.
+     * @param userId User ID of the user who owns the portfolio
+     * @param portfolio Portfolio that will be added to repo. 
+     */
+    public void addPortfolio(ObjectId userId,Portfolio portfolio){
         //find user by id 
         User curUser = userService.getUser(userId);
         if(curUser == null) curUser = userService.updateUser(new User());
       
         //set userId of port
-        port.setUserId(userId);
+        portfolio.setUserId(userId);
         //create an id for the port
-        ObjectId pId = repo.insert(port).getId();
+        ObjectId pId = repo.insert(portfolio).getId();
         //add id to user
         curUser.addToPortfolio(pId);
         //update user by adding current portfolio to user 
@@ -197,7 +219,8 @@ public class PortfolioService {
     }
 
     /**
-     * FOR TESTING PURPOSES. WANT TO MANUALLY CREATE A PORTFOLIO
+     * Adds a new portfolio into the repository
+     * @return Portfolio object that was added into the repo
      */
     public Portfolio addPortfolio(){
         Portfolio newPortfolio = new Portfolio();
@@ -205,7 +228,13 @@ public class PortfolioService {
     }
 
 
-    // Called when TradeService calls add Trade
+    /***
+     *  Adds a trade to a Portfolio's outstanding and history list. 
+     *  Used when TradeService calls add Trade. 
+     *  Needed to keep track of fufilment updates of a trade.
+     * @param tradeId Id of Trade to add to the portfolio's outstanding and history list
+     * @param portfolioId Id of Portfolio to add the Trade to.
+     */
     public void addTrade(ObjectId tradeId, ObjectId portfolioId){
         Optional<Portfolio> retrievePortfolio = repo.findById(portfolioId);
         if (!retrievePortfolio.isPresent()){
@@ -222,11 +251,18 @@ public class PortfolioService {
     }
 
 
+    /***
+     *  Creates a stock with the given ticker and quantity. 
+     *  Adds this stock to a portfolio
+     * @param ticker Name of the stock ticker
+     * @param quantity The number of stock to add of this ticker
+     * @param portfolioId The ID of the Portfolio that will receive the new addition of stocks
+     */
     public void addStock(String ticker, int quantity, ObjectId portfolioId){
         try{
             Portfolio portfolio = getPortfolioRepo(portfolioId);
             HashMap<String, Stock> portfolio_stocks = portfolio.getStocks();
-            if (portfolio_stocks.containsKey(ticker) == false){ //Stock does not exist in portfolio yet
+            if (portfolio_stocks.containsKey(ticker) == false){ // Stock does not exist in portfolio yet
                 Stock new_stock = new Stock();
                 new_stock.setAmount(quantity);
                 new_stock.setTicker(ticker);
@@ -243,6 +279,12 @@ public class PortfolioService {
     }
 
 
+    /***
+     * Removes a Stock from the Portfolio once the quantity reaches 0 
+     * @param ticker The ticker to remove stocks from
+     * @param quantity The number of stocks to remove 
+     * @param portfolioId The id of the portfolio to remove stocks from 
+     */
     public void removeStock(String ticker, int quantity, ObjectId portfolioId){
         try{
             Portfolio portfolio = getPortfolioRepo(portfolioId);
@@ -270,6 +312,11 @@ public class PortfolioService {
     }
     
 
+    /***
+     *  Retrieve a Portfolio from the repository given a portfolio id 
+     * @param portfolioId The porfolio id to retrieve
+     * @return The associated Portfolio object 
+     */
     public Portfolio getPortfolioRepo(ObjectId portfolioId){
         Optional<Portfolio> retrievePortfolio = repo.findById(portfolioId);
         if (!retrievePortfolio.isPresent()){
@@ -278,11 +325,22 @@ public class PortfolioService {
         return retrievePortfolio.get();
     }
 
+    /***
+     *  Used when dummy trade service processes a trade 
+     *  It will remove a Trade object from the Portfolio's outstanding list 
+     * @param removeList List of the trade's object ids to remove 
+     * @param portfolioId The id of the portfolio to remove trades from
+     */
     public void removeTradesFromOutstandingList(List<ObjectId> removeList, ObjectId portfolioId){
         Portfolio p = getPortfolioRepo(portfolioId);
         p.removeTradesFromOutstanding(removeList);
         repo.save(p);
     }
+
+    /**
+     * A scheduler that routinely checks the trade status of all trades in all the portfolios in the repository 
+     * It will update the Stock list accordingly based on whether the trade was accepted or rejected. 
+     */
     @Scheduled(fixedRate=10000)
     public void scheduleUpdateOutstandingTrade() {
         log.info("start the interval call to update the outsanding trade for all the portfolios in dbs");
