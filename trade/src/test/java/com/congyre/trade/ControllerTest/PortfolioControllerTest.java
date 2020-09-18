@@ -1,32 +1,24 @@
 package com.congyre.trade.ControllerTest;
 
-import static org.junit.Assert.assertEquals;
-import static org.mockito.ArgumentMatchers.notNull;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.equalTo;
 
 import java.util.Date;
-import java.util.List;
 
 import java.util.stream.Stream;
 import java.util.stream.StreamSupport;
-import java.util.Optional;
 import com.congyre.trade.entity.Portfolio;
 import com.congyre.trade.entity.Trade;
 import com.congyre.trade.entity.Stock;
 import com.congyre.trade.entity.Trade.TradeStatus;
 import com.congyre.trade.repository.PortfolioRepository;
 import com.congyre.trade.repository.TradeRepository;
-import com.congyre.trade.rest.TradeController;
 import com.congyre.trade.rest.PortfolioController;
 import com.congyre.trade.service.PortfolioService;
-import com.congyre.trade.service.TradeService;
 
-import org.bson.types.ObjectId;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.mockito.internal.matchers.GreaterThan;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.test.context.SpringBootTest;

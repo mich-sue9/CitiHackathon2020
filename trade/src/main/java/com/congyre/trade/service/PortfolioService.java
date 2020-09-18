@@ -368,12 +368,12 @@ public class PortfolioService {
                 curTrade = tradeService.getTradeById(id).orElse(null);
 
                 // check if the outstanding is rejected, if yes remove from outstanding list
-                if (curTrade != null & curTrade.gettStatus() == TradeStatus.REJECTED) {
+                if (curTrade != null && curTrade.gettStatus() == TradeStatus.REJECTED) {
                     outListtoRemove.add(id);
                 }
 
                 // if current trade is not null and the current trade has been fulfilled
-                else if (curTrade != null & curTrade.gettStatus() == TradeStatus.FILLED) {
+                else if (curTrade != null && curTrade.gettStatus() == TradeStatus.FILLED) {
                     // remove the trade from the outStandinglist
                     outListtoRemove.add(id);
 

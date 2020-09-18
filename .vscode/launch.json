@@ -1,0 +1,24 @@
+{
+    "configurations": [
+        {
+            "type": "java",
+            "name": "Spring Boot-TradeSimulatorApplication<trade-simulator>",
+            "request": "launch",
+            "cwd": "${workspaceFolder}",
+            "console": "internalConsole",
+            "mainClass": "com.conygre.training.tradesimulator.TradeSimulatorApplication",
+            "projectName": "trade-simulator",
+            "args": ""
+        },
+        {
+            "type": "java",
+            "name": "Spring Boot-TradeApplication<trade>",
+            "request": "launch",
+            "cwd": "${workspaceFolder}",
+            "console": "internalConsole",
+            "mainClass": "com.congyre.trade.TradeApplication",
+            "projectName": "trade",
+            "args": ""
+        }
+    ]
+}
