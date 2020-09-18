@@ -7,7 +7,6 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 import static org.hamcrest.MatcherAssert.assertThat;
@@ -19,13 +18,8 @@ import java.util.Optional;
 import java.util.stream.Stream;
 import java.util.stream.StreamSupport;
 
-import com.congyre.trade.entity.Trade;
 import com.congyre.trade.entity.User;
-import com.congyre.trade.repository.PortfolioRepository;
-import com.congyre.trade.repository.TradeRepository;
 import com.congyre.trade.repository.UserRepository;
-import com.congyre.trade.service.PortfolioService;
-import com.congyre.trade.service.TradeService;
 import com.congyre.trade.service.UserService;
 
 import org.bson.types.ObjectId;

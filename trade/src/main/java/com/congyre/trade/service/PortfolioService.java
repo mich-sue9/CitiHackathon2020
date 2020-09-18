@@ -86,7 +86,6 @@ public class PortfolioService {
     public Portfolio getportfolio(ObjectId id) {
         Optional<Portfolio> retrivePortfolio = repo.findById(id);// can be empty
         if (retrivePortfolio.isPresent()){
-            System.out.println("we still get here!!!!!!!!!!!!!!!!!!!!!");
             log.log(Level.INFO, "Portfolio retrieved with id: " + id);
             return retrivePortfolio.get();
         }else{
