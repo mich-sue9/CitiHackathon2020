@@ -11,7 +11,7 @@ Users are able to:
 * View live stock prices
 * Obtain visualization of a their portfolio.
 
-##Details:
+## Details:
 *React for front end
 *Java SpringBoot to code out backend microserservices
 *MongoDb for database
