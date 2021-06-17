@@ -12,8 +12,8 @@ Users are able to:
 * Obtain visualization of a their portfolio.
 
 ## Details:
-*React for front end
-*Java SpringBoot to code out backend microserservices
-*MongoDb for database
-*external APIs to collect data on live stock prices
-*unit and integration testing
+* React for front end
+* Java SpringBoot to code out backend microserservices
+* MongoDb for database
+* External APIs to collect data on live stock prices
+* Unit and integration testing
